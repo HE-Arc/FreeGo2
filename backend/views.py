@@ -2,8 +2,10 @@ from rest_framework.response import Response
 from rest_framework import generics
 from .models import Fridge
 from .serializers import FridgeSerializer
+from rest_framework.permissions import IsAuthenticated
 
 class FridgeView(generics.RetrieveAPIView):
+    permission_classes = (IsAuthenticated, )
     queryset = Fridge.objects.all()
 
     def get(self, request, *args, **kwargs):

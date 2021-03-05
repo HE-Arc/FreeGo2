@@ -1,6 +1,5 @@
 <template>
   <div class="fridge">
-    <Navbar></Navbar>
     <div class="album py-5 bg-light">
       <div class="container">
         <div class="row">
@@ -21,32 +20,29 @@
         </div>
       </div>
     </div>
+    <Navbar></Navbar>
   </div>
 </template>
 
 <script>
-  import { getAPI } from '../axios-api'
   import Navbar from '../components/Navbar'
+  import { getAPI } from '../axios-api'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'Fridge',
-    data (){
-      return {
-        APIData: []
-      }
-    },
     components: {
       Navbar
     },
+    computed: mapState(['APIData']),
     created () {
-      getAPI.get('/fridge/',)
-        .then(response => {
-          console.log('Fridge API has received data')
-          this.APIData = response.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
+      getAPI.get('/fridge/', { headers: { Authorization: `Bearer ${this.$store.state.accessToken}` } })
+      .then(response => {
+        this.$store.state.APIData = response.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
     },
   }
 </script>

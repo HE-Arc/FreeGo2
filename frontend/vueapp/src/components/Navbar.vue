@@ -12,8 +12,8 @@
             <li class="nav-item">
               <router-link :to = "{ name:'home' }" exact>Accueil</router-link>
             </li>
-            <li class="nav-item">
-              <router-link :to = "{ name:'favoris' }" exact v-show="isUserConnected">Favoris</router-link>
+            <li class="nav-item" v-if="accessToken!=null">
+              <router-link :to = "{ name:'fridge' }" exact>Favoris</router-link>
             </li>
             <li class="nav-item">
               <router-link :to = "{ name:'options' }" exact>Options</router-link>
@@ -27,14 +27,11 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'Navbar',
-  props: {
-    isUserConnected: {
-      type: Boolean,
-      required: true,
-    }
-  },
+  computed: mapState(['accessToken']),
 }
 </script>
 

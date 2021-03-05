@@ -1,7 +1,7 @@
 <template>
   <div class="options">
     <Head v-bind:isUserConnected=isUserConnected></Head>
-    <Navbar v-bind:isUserConnected=isUserConnected></Navbar>
+    <Navbar></Navbar>
   </div>
 </template>
 

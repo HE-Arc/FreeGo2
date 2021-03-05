@@ -3,7 +3,7 @@
     <Head v-bind:isUserConnected=isUserConnected></Head>
     <p v-show="!isUserConnected">Notre association a pour but de mettre en place des réfrigérateurs libre-service afin de diminuer le gaspillage alimentaire tout en permettant d'aider les personnes dans le besoin. Elle a été créée en 2019.</p>
     <Map></Map>
-    <Navbar v-bind:isUserConnected=isUserConnected></Navbar>
+    <Navbar></Navbar>
   </div>
 </template>
 
