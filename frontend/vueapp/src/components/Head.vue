@@ -2,7 +2,7 @@
   <div class="head">
     <p>
       <span>Free Go</span>
-      <button v-if="accessToken!=null">Notifications</button>
+      <router-link :to = "{ name:'notifications' }" v-if="accessToken!=null" exact>Notifications</router-link>
     </p>
   </div>
 </template>

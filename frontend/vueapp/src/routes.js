@@ -8,6 +8,7 @@ import Logout from './views/Logout'
 import ContactUs from './views/ContactUs'
 import Donations from './views/Donations'
 import ManageFridge from './views/ManageFridge'
+import Notifications from './views/Notifications'
 
 Vue.use(VueRouter)
 
@@ -57,6 +58,11 @@ export default new VueRouter({
             path: '/manageFridge',
             name: 'manageFridge',
             component: ManageFridge,
+        },
+        {
+            path: '/notifications',
+            name: 'notifications',
+            component: Notifications,
         },
     ]
 })
