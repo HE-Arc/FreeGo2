@@ -5,6 +5,7 @@ import Options from './views/Options'
 import Fridge from './views/Fridge'
 import Login from './views/Login'
 import Logout from './views/Logout'
+import ContactUs from './views/ContactUs'
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,11 @@ export default new VueRouter({
             path: '/logout',
             name: 'logout',
             component: Logout,
+        },
+        {
+            path: '/contact',
+            name: 'contactUs',
+            component: ContactUs,
         },
     ]
 })
