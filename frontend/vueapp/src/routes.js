@@ -28,7 +28,7 @@ export default new VueRouter({
             component: Options,
         },
         {
-            path: '/fridge/:fridgeId',
+            path: '/fridge/:fridgeId?',
             name: 'fridge',
             component: Fridge,
         },
