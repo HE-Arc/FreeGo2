@@ -48,7 +48,7 @@
           password: this.password
         })
         .then(() => {
-          this.$router.push({ name: 'fridge' })
+          this.$router.push({ name: 'home' })
         })
         .catch(err => {
           console.log(err)

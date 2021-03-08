@@ -13,7 +13,7 @@
               <router-link :to = "{ name:'home' }" exact>Accueil</router-link>
             </li>
             <li class="nav-item" v-if="accessToken!=null">
-              <router-link :to = "{ name:'fridge' }" exact>Favoris</router-link>
+              <router-link :to = "{ name:'favorites' }" exact>Favoris</router-link>
             </li>
             <li class="nav-item">
               <router-link :to = "{ name:'options' }" exact>Options</router-link>

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from './views/Home'
 import Options from './views/Options'
 import Fridge from './views/Fridge'
+import Favorites from './views/Favorites'
 import Login from './views/Login'
 import Logout from './views/Logout'
 import ContactUs from './views/ContactUs'
@@ -27,12 +28,14 @@ export default new VueRouter({
             component: Options,
         },
         {
-            path: '/fridge',
+            path: '/fridge/:fridgeId',
             name: 'fridge',
             component: Fridge,
-            meta: {
-                requiresLogin: true
-            }
+        },
+        {
+            path: '/favorites',
+            name: 'favorites',
+            component: Favorites,
         },
         {
             path: '/login',

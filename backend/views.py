@@ -9,11 +9,11 @@ class FridgeViewSet(viewsets.ModelViewSet):
     queryset = Fridge.objects.all()
     serializer_class = FridgeSerializer
 
-class FridgeView(generics.RetrieveAPIView):
+""" class FridgeView(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated, )
     queryset = Fridge.objects.all()
 
     def get(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = FridgeSerializer(queryset, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data) """
