@@ -6,6 +6,8 @@ import Fridge from './views/Fridge'
 import Login from './views/Login'
 import Logout from './views/Logout'
 import ContactUs from './views/ContactUs'
+import Donations from './views/Donations'
+import ManageFridge from './views/ManageFridge'
 
 Vue.use(VueRouter)
 
@@ -45,6 +47,16 @@ export default new VueRouter({
             path: '/contact',
             name: 'contactUs',
             component: ContactUs,
+        },
+        {
+            path: '/donations',
+            name: 'donations',
+            component: Donations,
+        },
+        {
+            path: '/manageFridge',
+            name: 'manageFridge',
+            component: ManageFridge,
         },
     ]
 })

@@ -14,6 +14,10 @@ export default new Vuex.Store({
             state.accessToken = access
             state.refreshToken = refresh
         },
+        destroyToken (state) {
+          state.accessToken = null
+          state.refreshToken = null
+        }
     },
     getters: {
         loggedIn (state) {
