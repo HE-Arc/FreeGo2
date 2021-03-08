@@ -2,7 +2,7 @@
   <div class="container text-dark">
     <div class="row justify-content-md-center">
       <div class="col-md-5 p-3 login justify-content-md-center">
-        <h1 class="h3 mb-3 font-weight-normal text-center">S'enregistrer</h1>
+        <h1 class="h3 mb-3 font-weight-normal text-center">Se connecter</h1>
         <p v-if="incorrectAuth">Nom d'utilisateur ou mot de passe incorrect - veuillez réessayer</p>
         <form v-on:submit.prevent="login">
           <div class="form-group">
