@@ -3,6 +3,11 @@ from rest_framework import generics
 from .models import Fridge
 from .serializers import FridgeSerializer
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import viewsets
+
+class FridgeViewSet(viewsets.ModelViewSet):
+    queryset = Fridge.objects.all()
+    serializer_class = FridgeSerializer
 
 class FridgeView(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated, )

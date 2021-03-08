@@ -8,13 +8,11 @@
             <div class="card mb-4 box-shadow">
               <img class="card-img-top" src="https://via.placeholder.com/150x100" alt="Card image cap">
               <div class="card-body">
-                <h4><a href="" class="text-secondary">{{fridge.name}}</a></h4>
+                <h4><a class="text-secondary">{{ fridge.name }}</a></h4>
                 <div class="d-flex justify-content-between align-items-center"></div>
                 <div class="btn-group">
-                  <a href="" class="btn btn-sm btn-outline-primary" role="button" aria-pressed="true">View</a>
-                  <a href="" class="btn btn-sm btn-outline-secondary" role="button" aria-pressed="true">Edit</a>
+                  <router-link :to = "{ name:'donations' }" class="btn btn-sm btn-outline-primary" role="button" aria-pressed="true" exact>Voir</router-link>
                 </div>
-                <small class="text-muted">9 mins</small>
               </div>
             </div>
           </div>
