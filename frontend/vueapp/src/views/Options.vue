@@ -1,6 +1,6 @@
 <template>
   <div class="options">
-    <Head v-bind:isUserConnected=isUserConnected></Head>
+    <Head></Head>
     <Navbar></Navbar>
   </div>
 </template>

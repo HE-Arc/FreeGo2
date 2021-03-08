@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'login',
   data () {
@@ -28,6 +30,7 @@ export default {
       incorrectAuth: false,
     }
   },
+  computed: mapState(['accessToken']),
   methods: {
     login() {
       this.$store.dispatch('userLogin', {

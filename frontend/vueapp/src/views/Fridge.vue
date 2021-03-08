@@ -1,5 +1,6 @@
 <template>
   <div class="fridge">
+    <Head></Head>
     <div class="album py-5 bg-light">
       <div class="container">
         <div class="row">
@@ -26,13 +27,15 @@
 
 <script>
   import Navbar from '../components/Navbar'
+  import Head from '../components/Head'
   import { getAPI } from '../axios-api'
   import { mapState } from 'vuex'
 
   export default {
     name: 'Fridge',
     components: {
-      Navbar
+      Navbar,
+      Head,
     },
     computed: mapState(['APIData']),
     created () {

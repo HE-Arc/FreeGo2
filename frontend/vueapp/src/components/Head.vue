@@ -2,21 +2,18 @@
   <div class="head">
     <p>
       <span>Free Go</span>
-      <button v-show="isUserConnected">Notifications</button>
+      <button v-if="accessToken!=null">Notifications</button>
     </p>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'Head',
-  props: {
-    isUserConnected: {
-      type: Boolean,
-      required: true,
-    }
-  },
-}
+  import { mapState } from 'vuex'
+
+  export default {
+    name: 'Head',
+    computed: mapState(['accessToken']),
+  }
 </script>
 
 <style scoped>

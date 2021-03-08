@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+  import { mapState } from 'vuex'
 
-export default {
-  name: 'Navbar',
-  computed: mapState(['accessToken']),
-}
+  export default {
+    name: 'Navbar',
+    computed: mapState(['accessToken']),
+  }
 </script>
 
 <style scoped>
