@@ -9,5 +9,9 @@ class FridgeAdmin(admin.ModelAdmin):
         PictureInLine,
     ]
 
+@admin.register(Picture)
+class PictureAdmin(admin.ModelAdmin):
+    list_display = ('id', 'slug')
+    prepopulated_fields = {'slug': ('id',), }
+
 admin.site.register(Fridge, FridgeAdmin)
-admin.site.register(Picture)
