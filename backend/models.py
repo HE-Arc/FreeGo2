@@ -15,4 +15,4 @@ class Fridge(models.Model):
 
 class Picture(models.Model):
     image = models.ImageField()
-    fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE)
+    fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE, related_name="pictures")

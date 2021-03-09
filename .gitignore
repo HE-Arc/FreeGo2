@@ -205,6 +205,11 @@ pytestdebug.log
 
 # Django stuff:
 
+# Images:
+*.png
+*.jpg
+*.jpeg
+
 # Flask stuff:
 instance/
 .webassets-cache
