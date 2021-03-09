@@ -21,7 +21,7 @@
     },
     computed: mapState(['APIData']),
     created () {
-      getAPI.get('/fridge/'.concat(this.$route.params.fridgeId), )
+      getAPI.get(((this.$route.params.fridgeId) ? '/fridge/'.concat(this.$route.params.fridgeId) : '/fridge/'), )
       .then(response => {
         this.$store.state.APIData = response.data
       })
