@@ -1,29 +1,15 @@
 <template>
-  <div class="nav-bar">
-    <nav class="navbar navbar-expand-lg navbar-light bg-white nav-1">
-      <div class="container mw-0 px-3">
-        <a href="#" class="navbar-brand"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <router-link :to = "{ name:'home' }" exact>Accueil</router-link>
-            </li>
-            <li class="nav-item" v-if="accessToken!=null">
-              <router-link :to = "{ name:'favorites' }" exact>Favoris</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link :to = "{ name:'options' }" exact>Options</router-link>
-            </li>
-          </ul>
-        </div>
-
-      </div>
-    </nav>
-  </div>
+  <v-bottom-navigation grow horizontal fixed>
+    <v-btn value="home" :to = "{ name:'home' }" exact>
+      <span>Accueil</span>
+    </v-btn>
+    <v-btn value="favorites" v-if="accessToken!=null" :to = "{ name:'favorites' }" exact>
+      <span>Favoris</span>
+    </v-btn>
+    <v-btn value="options" :to = "{ name:'options' }" exact>
+      <span>Options</span>
+    </v-btn>
+  </v-bottom-navigation>
 </template>
 
 <script>

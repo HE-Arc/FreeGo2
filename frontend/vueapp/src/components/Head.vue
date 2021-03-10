@@ -1,10 +1,16 @@
 <template>
-  <div class="head">
-    <p>
-      <span>Free Go</span>
-      <router-link :to = "{ name:'notifications' }" v-if="accessToken!=null" exact>Notifications</router-link>
-    </p>
-  </div>
+
+  <v-app-bar app color="primary" dark>
+    <div class="head">
+      <p>
+        <span>Free Go</span>
+        <v-btn value="notifications" icon :to = "{ name:'notifications' }" v-if="accessToken!=null" exact>
+          <v-icon>mdi-bell</v-icon>
+        </v-btn>
+      </p>
+    </div>
+  </v-app-bar>
+
 </template>
 
 <script>
