@@ -3,6 +3,13 @@
     <Head></Head>
     <p>TODO: Détails du frigo</p>
     <p>{{ APIData }}</p>
+    
+    <ul>
+      <li v-for="picture in APIData.pictures" :key=picture.image>
+        <img v-bind:src="picture.image"/>
+      </li>
+    </ul>
+
     <Navbar></Navbar>
   </div>
 </template>

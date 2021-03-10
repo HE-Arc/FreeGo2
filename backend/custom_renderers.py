@@ -2,7 +2,7 @@ from rest_framework import renderers
 
 class JPEGRenderer(renderers.BaseRenderer):
     media_type = 'image/jpeg'
-    format = 'jpg'
+    format = 'jpeg'
     charset = None
     render_style = 'binary'
 

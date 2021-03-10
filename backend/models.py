@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 def user_directory_path(instance, filename):
-    return 'images/{0}'.format(filename)
+    return 'fridges/{0}'.format(filename)
 
 class Fridge(models.Model):
     def menu_list_default():

@@ -4,22 +4,17 @@ from .models import Fridge, Picture
 from .serializers import FridgeSerializer, PictureSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
+from rest_framework.renderers import JSONRenderer
 from .custom_renderers import JPEGRenderer, PNGRenderer
+from wsgiref.util import FileWrapper
 
 class FridgeViewSet(viewsets.ModelViewSet):
+    renderer_classes = [JSONRenderer,]
     queryset = Fridge.objects.all()
+    #permission_classes = (IsAuthenticated, )
     serializer_class = FridgeSerializer
 
 class PictureViewSet(viewsets.ModelViewSet):
-    renderer_classes = [JPEGRenderer, PNGRenderer]
+    renderer_classes = [JSONRenderer,]
     queryset = Picture.objects.all()
     serializer_class = PictureSerializer
-
-""" class FridgeView(generics.RetrieveAPIView):
-    permission_classes = (IsAuthenticated, )
-    queryset = Fridge.objects.all()
-
-    def get(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        serializer = FridgeSerializer(queryset, many=True)
-        return Response(serializer.data) """
