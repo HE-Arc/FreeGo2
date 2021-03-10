@@ -1,14 +1,34 @@
 <template>
-  <div class="options-menu">
-    <p>
-      <router-link :to = "{ name:'donations' }" exact>Donations</router-link>
-      <router-link :to = "{ name:'contactUs' }" exact>Nous contacter</router-link>
-      <router-link :to = "{ name:'manageFridge' }" v-if="accessToken!=null" exact>Gérer mon Free Go</router-link>
-      <!-- TODO: ManageFridge should only be available to Manager role -->
-      <router-link :to = "{ name:'login' }" v-if="accessToken==null" exact>Se connecter</router-link>
-      <router-link :to = "{ name:'logout' }" v-else exact>Se déconnecter</router-link>
-    </p>
-  </div>
+  <v-navigation-drawer absolute width="100%" permanent>
+    <v-list>
+      <v-list-item link :to="{ name:'donations' }" exact>
+        <v-list-item-content>
+          <v-list-item-title>Donations</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item link :to="{ name:'contactUs' }" exact>
+        <v-list-item-content>
+          <v-list-item-title>Nous contacter</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item link :to="{ name:'manageFridge' }" exact>
+        <!-- TODO: ManageFridge should only be available to Manager role -->
+        <v-list-item-content>
+          <v-list-item-title>Gérer mon Free Go</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item v-if="accessToken==null" link :to="{ name:'login' }" exact>
+        <v-list-item-content>
+          <v-list-item-title>Se connecter</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-list-item v-else link :to="{ name:'logout' }" exact>
+        <v-list-item-content>
+          <v-list-item-title>Se déconnecter</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
 </template>
 
 <script>
