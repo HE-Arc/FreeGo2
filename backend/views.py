@@ -5,7 +5,6 @@ from .serializers import FridgeSerializer, PictureSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
-from .custom_renderers import JPEGRenderer, PNGRenderer
 from wsgiref.util import FileWrapper
 
 class FridgeViewSet(viewsets.ModelViewSet):
