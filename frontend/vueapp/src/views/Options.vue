@@ -1,8 +1,8 @@
 <template>
   <div class="options">
-    <Head></Head>
-    <OptionsMenu></OptionsMenu>
-    <Navbar></Navbar>
+    <Head/>
+    <OptionsMenu/>
+    <Navbar/>
   </div>
 </template>
 

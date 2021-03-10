@@ -1,6 +1,12 @@
 <template>
   <div class="favorites">
-    <Head></Head>
+    <Head/>
+    <FridgeCard v-for="fridge in APIData" v-bind:key="fridge.id" v-bind:fridge="fridge"></FridgeCard>
+    <Navbar/>
+  </div>
+
+  <!-- <div class="favorites">
+    <Head/>
     <div class="album py-5 bg-light">
       <div class="container">
         <div class="row">
@@ -19,13 +25,14 @@
         </div>
       </div>
     </div>
-    <Navbar></Navbar>
-  </div>
+    <Navbar/>
+  </div> -->
 </template>
 
 <script>
   import Navbar from '../components/Navbar'
   import Head from '../components/Head'
+  import FridgeCard from '../components/FridgeCard'
   import { getAPI } from '../axios-api'
   import { mapState } from 'vuex'
 
@@ -34,6 +41,7 @@
     components: {
       Navbar,
       Head,
+      FridgeCard,
     },
     computed: mapState(['APIData']),
     created () {
@@ -49,5 +57,4 @@
 </script>
 
 <style scoped>
-
 </style>

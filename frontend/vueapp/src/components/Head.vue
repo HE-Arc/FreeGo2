@@ -1,5 +1,4 @@
 <template>
-
   <v-app-bar app color="primary" dark>
     <div class="head">
       <p>
@@ -10,7 +9,6 @@
       </p>
     </div>
   </v-app-bar>
-
 </template>
 
 <script>
@@ -23,7 +21,4 @@
 </script>
 
 <style scoped>
-  a {
-    color: #000;
-  }
 </style>
