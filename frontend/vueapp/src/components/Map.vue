@@ -6,11 +6,13 @@
       :zoom="10" 
       style="width:100%; height:400px;"
       ref="mapRef"
-    ></GmapMap>
+    >
+    </GmapMap>
   </div>
 </template>
 
 <script>
+  import { gmapApi } from 'vue2-google-maps'
   export default {
     name: 'Map',
 
@@ -23,6 +25,10 @@
         }
       }
     },
+    
+    computed: {
+        google: gmapApi
+    },
 
     created() {
       this.$getLocation({})
@@ -33,7 +39,12 @@
     },
 
     mounted() {
-      this.$refs.mapRef.$mapPromise.then(map => this.map = map)
+      this.$refs.mapRef.$mapPromise.then((map) => {
+        new this.google.maps.KmlLayer({
+            map,
+            url: `https://www.google.com/maps/d/u/1/kml?forcekml=1&mid=1hc3fe23eojoXxayFh9kONc6v6ezx558u`
+        })
+      })
     },
   }
 </script>
