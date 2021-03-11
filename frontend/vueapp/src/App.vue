@@ -9,17 +9,20 @@
 </template>
 
 <script>
-import Home from './views/Home'
+  import Home from './views/Home'
+  import Vue from 'vue'
+  import Vuelidate from 'vuelidate'
+  Vue.use(Vuelidate)
 
-export default {
-  name: 'App',
+  export default {
+    name: 'App',
 
-  components: {
-    Home,
-  },
+    components: {
+      Home,
+    },
 
-  data: () => ({
-    //
-  }),
-};
+    data: () => ({
+      //
+    }),
+  };
 </script>
