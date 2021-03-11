@@ -30,14 +30,15 @@
           @change="$v.message.$touch()"
           @blur="$v.message.$touch()"
         ></v-textarea>
+        <v-btn
+          class="mr-4"
+          :disabled="submitStatus === 'PENDING'"
+          @click="submit"
+          color="primary"
+        >
+          Envoyer
+        </v-btn>
       </v-col>
-      <v-btn
-        class="mr-4"
-        :disabled="submitStatus === 'PENDING'"
-        @click="submit"
-      >
-        Envoyer
-      </v-btn>
       <p class="typo__p" v-if="submitStatus === 'OK'">Merci de votre message !</p>
       <p class="typo__p" v-if="submitStatus === 'ERROR'">Veuillez corriger les erreurs.</p>
       <p class="typo__p" v-if="submitStatus === 'PENDING'">Envoi...</p>
@@ -107,7 +108,6 @@
 
     methods: {
       submit() {
-        console.log('submit!')
         this.$v.$touch()
         if (this.$v.$invalid) {
           this.submitStatus = 'ERROR'
