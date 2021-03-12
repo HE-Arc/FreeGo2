@@ -86,7 +86,6 @@
       },
     },
 
-
     methods: {
       login() {
         this.$v.$touch()
@@ -110,7 +109,7 @@
           })
         }
       }
-    }
+    },
   }
 </script>
 

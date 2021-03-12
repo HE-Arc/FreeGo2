@@ -2,7 +2,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './routes.js'
 import store from './store'
-import 'bootstrap/dist/css/bootstrap.min.css' // TODO: delete
 import vuetify from './plugins/vuetify';
 import './registerServiceWorker'
 import VueGeolocation from 'vue-browser-geolocation'

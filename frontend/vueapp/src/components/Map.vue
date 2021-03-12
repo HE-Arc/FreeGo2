@@ -1,18 +1,21 @@
 <template>
   <div class="google-map" ref="googleMap">
     <!-- <iframe src="https://www.google.com/maps/d/embed?mid=1hc3fe23eojoXxayFh9kONc6v6ezx558u" width="100%" height="400px"></iframe> -->
+
     <GmapMap 
       :center="coordinates" 
-      :zoom="10" 
-      style="width:100%; height:400px;"
+      :zoom="12" 
+      style="width:100vw; height:500px;"
       ref="mapRef"
     >
     </GmapMap>
+
   </div>
 </template>
 
 <script>
   import { gmapApi } from 'vue2-google-maps'
+
   export default {
     name: 'Map',
 
@@ -22,12 +25,12 @@
         coordinates: {
           lat: 0,
           lng: 0,
-        }
+        },
       }
     },
     
     computed: {
-        google: gmapApi
+      google: gmapApi
     },
 
     created() {
