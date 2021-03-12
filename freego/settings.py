@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'backend',
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -90,10 +91,20 @@ WSGI_APPLICATION = 'freego.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'freegoDB',
+        'USER': 'postgres',
+        'PASSWORD': 'admin',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
+# Cron jobs
+
+CRONJOBS = [
+    ('0 0 * * *', 'freego.cron.update_database')
+]
 
 
 # Password validation

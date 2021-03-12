@@ -210,6 +210,10 @@ pytestdebug.log
 *.jpg
 *.jpeg
 
+# KML files:
+*.kml
+*.kmz
+
 # Flask stuff:
 instance/
 .webassets-cache
