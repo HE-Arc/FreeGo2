@@ -23,6 +23,6 @@ class Fridge(models.Model):
 
 class Picture(models.Model):
     image = models.ImageField(upload_to=user_directory_path)
-    slug = models.SlugField(max_length=250, unique_for_date='created', default='')
     created = models.DateTimeField(default=timezone.now)
+    slug = models.SlugField(max_length=250, unique_for_date='created', default='')
     fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE, related_name="pictures")
