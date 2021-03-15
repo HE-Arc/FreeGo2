@@ -7,7 +7,8 @@
       <v-card-title>
         <v-btn icon @click="isFavorite = !isFavorite">
           <v-icon color="primary" large>{{ isFavorite ? 'mdi-star' : 'mdi-star-outline' }}</v-icon>
-        </v-btn>{{ APIData.name }}
+        </v-btn>
+        {{ APIData.name }}
       </v-card-title>
       <v-card-text>{{ APIData.my_maps_description }}</v-card-text>
       <v-card-text>{{ APIData.manager_description }}</v-card-text>
@@ -15,7 +16,7 @@
       <v-container>
         <v-row align="center" no-gutters>
           <v-col>
-            <v-carousel v-model="model">
+            <v-carousel>
               <v-carousel-item v-for="picture in APIData.pictures" :key=picture.image>
                 <v-img v-bind:src="picture.image" :aspect-ration="3/4" max-width="180"></v-img>>
               </v-carousel-item>
@@ -53,7 +54,6 @@
     
     data: () => ({
       isFavorite: false,
-      model: 0
     }),
 
     computed: mapState(['APIData']),
