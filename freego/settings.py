@@ -30,6 +30,12 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+if os.name == 'nt':
+    VENV_BASE = os.environ['VIRTUAL_ENV']
+    os.environ['PATH'] = os.path.join(VENV_BASE, 'Lib\\site-packages\\osgeo') + ';' + os.environ['PATH']
+    os.environ['PROJ_LIB'] = os.path.join(VENV_BASE, 'Lib\\site-packages\\osgeo\\data\\proj') + ';' + os.environ['PATH']
+    
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
     'backend',
     'corsheaders',
     'rest_framework_simplejwt.token_blacklist',
@@ -91,7 +98,7 @@ WSGI_APPLICATION = 'freego.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'freegoDB',
         'USER': 'postgres',
         'PASSWORD': 'admin',

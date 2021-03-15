@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.contrib.gis.db import models
+from django.contrib.gis.geos import Point
 
 def user_directory_path(instance, filename):
     return 'fridges/{0}'.format(filename)
@@ -13,6 +15,7 @@ class Fridge(models.Model):
     my_maps_description = models.TextField(default="My Maps description")
     manager_description = models.TextField(default="Manager description")
     menu_list = models.JSONField(default=menu_list_default)
+    coordinates = models.PointField(default=Point(0, 0), srid=4326, geography=True)
 
     def __str__(self):
         return self.name
