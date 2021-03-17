@@ -38,6 +38,7 @@
 
   export default {
     name: 'OptionsMenu',
+    
     computed: mapState(['accessToken']),
   }
 </script>
