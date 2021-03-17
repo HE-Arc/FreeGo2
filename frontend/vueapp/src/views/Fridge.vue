@@ -39,6 +39,7 @@
     }),
 
     computed: mapState(['APIData']),
+    
     created () {
       getAPI.get(((this.$route.params.fridgeId) ? '/fridge/'.concat(this.$route.params.fridgeId) : '/fridge/'), )
       .then(response => {
