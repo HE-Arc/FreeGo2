@@ -19,6 +19,8 @@
       <v-card>
         <v-card-title>Menus</v-card-title>
         <v-card-text>{{ APIData.menu_list }}</v-card-text>
+        <v-treeview :menus="APIData.menu_list"></v-treeview>
+        
       </v-card>
       
     </v-card>

@@ -9,12 +9,12 @@ def user_directory_path(instance, filename):
 
 class Fridge(models.Model):
     def menu_list_default():
-        return {"menu": { "name": "", "allergens": ""}}
+        return {'menus': [{'name': 'Menu 1', 'children': [{'name': 'cacahouètes'}, {'name': 'lactose'}, ]}, {'name': 'Menu 2', 'children': [{'name': 'lactose'},]}]}
     
     name = models.CharField(max_length=250)
     my_maps_description = models.TextField(default="My Maps description")
     manager_description = models.TextField(default="Manager description")
-    menu_list = models.JSONField(default=menu_list_default)
+    menu_list = models.JSONField(default=menu_list_default, blank=True)
     coordinates = models.PointField(default=Point(0, 0), srid=4326, geography=True)
 
     def __str__(self):
