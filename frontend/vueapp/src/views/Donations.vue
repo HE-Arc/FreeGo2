@@ -1,24 +1,18 @@
 <template>
-  <div class="contactUs">
-    <Head></Head>
+  <v-row>
     <p>TODO: Lien vers TWINT</p>
-    <Navbar></Navbar>
-  </div>
+  </v-row>
 </template>
 
 <script>
-  import Navbar from '../components/Navbar'
-  import Head from '../components/Head'
 
   export default {
     name: 'ContactUs',
+
     components: {
-      Navbar,
-      Head,
     },
   }
 </script>
 
 <style scoped>
-
 </style>

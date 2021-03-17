@@ -1,22 +1,16 @@
 <template>
-  <div class="options">
-    <Head/>
+  <v-row>
     <OptionsMenu/>
-    <Navbar/>
-  </div>
+  </v-row>
 </template>
 
 <script>
-  import Navbar from '../components/Navbar'
-  import Head from '../components/Head'
   import OptionsMenu from '../components/OptionsMenu'
 
   export default {
     name: 'Options',
     components: {
-      Navbar,
       OptionsMenu,
-      Head,
     },
   }
 </script>

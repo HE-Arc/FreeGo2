@@ -1,6 +1,6 @@
 <template>
-  <div class="logout">
-  </div>
+  <v-row>
+  </v-row>
 </template>
 
 <script>

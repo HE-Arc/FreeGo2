@@ -1,54 +1,47 @@
 <template>
-  <div>
-    <Head/>
-    <form>
-      <v-col cols="12" md="4">
-        <v-text-field
-          v-model="username"
-          :error-messages="usernameErrors"
-          label="Nom d'utilisateur"
-          required
-          @input="$v.username.$touch()"
-          @blur="$v.username.$touch()"
-        ></v-text-field>
-        
-        <v-text-field
-          v-model="password"
-          :error-messages="passwordErrors"
-          :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-          :type="show ? 'text' : 'password'"
-          label="Mot de passe"
-          required
-          @click:append="show = !show"
-          @input="$v.password.$touch()"
-          @blur="$v.password.$touch()"
-        ></v-text-field><v-btn
-        class="mr-4"
-        :disabled="submitStatus === 'PENDING'"
-        @click="login"
-        color="primary"
-      >
-        Se connecter
-      </v-btn>
-      <p v-if="incorrectAuth">Nom d'utilisateur ou mot de passe incorrect - veuillez réessayer</p>
-      </v-col>
-    </form>
-    <Navbar/>
-  </div>
+    
+  <form>
+    <v-text-field
+      v-model="username"
+      :error-messages="usernameErrors"
+      label="Nom d'utilisateur"
+      required
+      @input="$v.username.$touch()"
+      @blur="$v.username.$touch()"
+    ></v-text-field>
+    
+    <v-text-field
+      v-model="password"
+      :error-messages="passwordErrors"
+      :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+      :type="show ? 'text' : 'password'"
+      label="Mot de passe"
+      required
+      @click:append="show = !show"
+      @input="$v.password.$touch()"
+      @blur="$v.password.$touch()"
+    ></v-text-field>
+    <v-btn
+      class="mr-4"
+      :disabled="submitStatus === 'PENDING'"
+      @click="login"
+      color="primary"
+    >
+    Se connecter
+    </v-btn>
+    <p v-if="incorrectAuth">Nom d'utilisateur ou mot de passe incorrect - veuillez réessayer</p>
+  </form>
+
 </template>
 
 <script>
   import { mapState } from 'vuex'
-  import Navbar from '../components/Navbar'
-  import Head from '../components/Head'
   import { required } from 'vuelidate/lib/validators'
 
   export default {
     name: 'login',
 
     components: {
-      Navbar,
-      Head,
     },
 
     data () {

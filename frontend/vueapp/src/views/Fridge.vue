@@ -1,7 +1,4 @@
 <template>
-  <div class="fridge">
-    <Head></Head>
-
     <v-card>
       
       <v-card-title>
@@ -13,34 +10,21 @@
       <v-card-text>{{ APIData.my_maps_description }}</v-card-text>
       <v-card-text>{{ APIData.manager_description }}</v-card-text>
 
-      <v-container>
-        <v-row align="center" no-gutters>
-          <v-col>
-            <v-carousel>
-              <v-carousel-item v-for="picture in APIData.pictures" :key=picture.image>
-                <v-img v-bind:src="picture.image" :aspect-ration="3/4" max-width="180"></v-img>>
-              </v-carousel-item>
-            </v-carousel>
-          </v-col>
+      <v-carousel>
+        <v-carousel-item v-for="picture in APIData.pictures" :key=picture.image>
+          <v-img v-bind:src="picture.image" :aspect-ration="3/4"></v-img>
+        </v-carousel-item>
+      </v-carousel>
 
-          <v-col>
-            <v-card>
-              <v-card-title>Menus</v-card-title>
-              <v-card-text>{{ APIData.menu_list }}</v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-card>
+        <v-card-title>Menus</v-card-title>
+        <v-card-text>{{ APIData.menu_list }}</v-card-text>
+      </v-card>
       
     </v-card>
-
-    <Navbar></Navbar>
-  </div>
 </template>
 
 <script>
-  import Navbar from '../components/Navbar'
-  import Head from '../components/Head'
   import { getAPI } from '../axios-api'
   import { mapState } from 'vuex'
 
@@ -48,8 +32,6 @@
     name: 'Fridge',
 
     components: {
-      Navbar,
-      Head,
     },
     
     data: () => ({
@@ -70,5 +52,4 @@
 </script>
 
 <style scoped>
-
 </style>

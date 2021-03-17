@@ -1,5 +1,5 @@
 <template>
-  <v-bottom-navigation grow horizontal fixed>
+  <v-bottom-navigation app grow horizontal fixed>
     <v-btn value="home" :to = "{ name:'home' }" exact>
       <span>Accueil</span>
     </v-btn>
@@ -22,7 +22,4 @@
 </script>
 
 <style scoped>
-  a {
-    color: #000;
-  }
 </style>

@@ -1,10 +1,21 @@
 <template>
-  <div class="home">
-    <Head/>
+
+  <v-row>
     <Map/>
-      <v-btn icon @click="overlay = !overlay">
-        <v-icon color="primary" large>mdi-information</v-icon>
-      </v-btn>
+    <v-btn icon @click="overlay = !overlay">
+      <v-icon color="primary" large>mdi-information</v-icon>
+    </v-btn>
+    <v-slider
+      v-model="distance"
+      hint="Afficher les Free Go à proximité"
+      max="50"
+      min="1"
+      value="10"
+      thumb-label
+      inverse-label
+    >
+      <template v-slot:label="">{{ distance }} km</template>
+    </v-slider>
 
     <v-overlay :absolute="true" :value="overlay" :opacity="0.8">
       <v-card max-width="300">
@@ -23,29 +34,25 @@
         </v-card-actions>
       </v-card>
     </v-overlay>
+  </v-row>
 
-    <Navbar/>
-  </div>
 </template>
 
 <script>
-  import Navbar from '../components/Navbar'
   import Map from '../components/Map'
-  import Head from '../components/Head'
   import { mapState } from 'vuex'
 
   export default {
     name: 'Home',
 
     components: {
-      Navbar,
       Map,
-      Head,
     },
     
     data() {
       return {
         overlay: mapState(['accessToken']),
+        distance: 10,
       }
     },
 

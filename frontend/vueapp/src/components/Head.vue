@@ -1,13 +1,10 @@
 <template>
   <v-app-bar app color="primary" dark>
-    <div class="head">
-      <p>
-        <span>Free Go</span>
-        <v-btn value="notifications" icon :to = "{ name:'notifications' }" v-if="accessToken!=null" exact>
-          <v-icon>mdi-bell</v-icon>
-        </v-btn>
-      </p>
-    </div>
+    <v-toolbar-title>Free Go</v-toolbar-title>
+    <v-spacer></v-spacer>
+    <v-btn value="notifications" icon :to = "{ name:'notifications' }" v-if="accessToken!=null" exact>
+      <v-icon>mdi-bell</v-icon>
+    </v-btn>
   </v-app-bar>
 </template>
 

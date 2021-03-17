@@ -1,49 +1,43 @@
 <template>
-  <div class="contactUs">
-    <Head></Head>
-    <h1>{{ APIData.name }}</h1>
     
-    <form>
-      <v-col cols="12" md="4">
-        <v-textarea
-          v-model="menus"
-          label="Menus"
-          :error-messages="menusErrors"
-          :counter="300"
-          @input="$v.menus.$touch()"
-          @blur="$v.menus.$touch()"
-        ></v-textarea>
-        
-        <v-textarea
-          v-model="description"
-          label="Panneaux d'affichage"
-          :error-messages="descriptionErrors"
-          :counter="300"
-          @input="$v.description.$touch()"
-          @blur="$v.description.$touch()"
-        ></v-textarea>
+  <form>
+    <!-- TODO: Get manager's fridge through APIData -->
+    <h1>{{ APIData.name }}</h1>
 
-        <v-btn
-          class="mr-4"
-          :disabled="submitStatus === 'PENDING'"
-          @click="submit"
-          color="primary"
-        >
-          Enregistrer
-        </v-btn>
-      </v-col>
-      <p class="typo__p" v-if="submitStatus === 'OK'">Changements enregistrés !</p>
-      <p class="typo__p" v-if="submitStatus === 'ERROR'">Veuillez corriger les erreurs.</p>
-      <p class="typo__p" v-if="submitStatus === 'PENDING'">Envoi...</p>
-    </form>
+    <v-textarea
+      v-model="menus"
+      label="Menus"
+      :error-messages="menusErrors"
+      :counter="300"
+      @input="$v.menus.$touch()"
+      @blur="$v.menus.$touch()"
+    ></v-textarea>
+      
+    <v-textarea
+      v-model="description"
+      label="Panneaux d'affichage"
+      :error-messages="descriptionErrors"
+      :counter="300"
+      @input="$v.description.$touch()"
+      @blur="$v.description.$touch()"
+    ></v-textarea>
 
-    <Navbar></Navbar>
-  </div>
+    <v-btn
+      class="mr-4"
+      :disabled="submitStatus === 'PENDING'"
+      @click="submit"
+      color="primary"
+    >
+      Enregistrer
+    </v-btn>
+    <p class="typo__p" v-if="submitStatus === 'OK'">Changements enregistrés !</p>
+    <p class="typo__p" v-if="submitStatus === 'ERROR'">Veuillez corriger les erreurs.</p>
+    <p class="typo__p" v-if="submitStatus === 'PENDING'">Envoi...</p>
+  </form>
+
 </template>
 
 <script>
-  import Navbar from '../components/Navbar'
-  import Head from '../components/Head'
   import { getAPI } from '../axios-api'
   import { mapState } from 'vuex'
   import { maxLength } from 'vuelidate/lib/validators'
@@ -52,12 +46,11 @@
     name: 'ContactUs',
 
     components: {
-      Navbar,
-      Head,
     },
 
     data () {
       return {
+        // TODO: fill menus and description with APIData
         images: null,
         menus: '',
         description: '',
@@ -118,5 +111,4 @@
 </script>
 
 <style scoped>
-
 </style>

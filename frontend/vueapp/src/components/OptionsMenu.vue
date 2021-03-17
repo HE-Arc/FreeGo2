@@ -1,5 +1,6 @@
 <template>
-  <v-navigation-drawer absolute width="100%" permanent>
+
+  <v-col>
     <v-list>
       <v-list-item link :to="{ name:'donations' }" exact>
         <v-list-item-content>
@@ -28,7 +29,8 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
-  </v-navigation-drawer>
+  </v-col>
+
 </template>
 
 <script>
