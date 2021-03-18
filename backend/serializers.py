@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Fridge, Picture
+from .models import Fridge, Picture, Favorite
 
 class PictureSerializer(serializers.ModelSerializer):
     fridge = serializers.StringRelatedField()
@@ -14,4 +14,12 @@ class FridgeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Fridge
+        fields = '__all__'
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    fridge = serializers.StringRelatedField()
+
+    class Meta:
+        model = Favorite
         fields = '__all__'

@@ -23,6 +23,7 @@ from django.conf import settings
 router = routers.DefaultRouter()
 router.register(r'fridge', views.FridgeViewSet)
 router.register(r'picture', views.PictureViewSet)
+router.register(r'favorite', views.FavoriteViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
