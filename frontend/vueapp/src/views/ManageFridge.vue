@@ -18,13 +18,6 @@
     <v-img :src="imageUrl" style="border: 1px dashed #ccc; height: 120px; width: 90px;" />
 
     <AddMenu/>
-
-    <!-- <v-textarea
-      v-model="menus"
-      label="Menus"
-      :error-messages="menusErrors"
-      clearable
-    ></v-textarea> -->
       
     <v-textarea
       v-model="description"
