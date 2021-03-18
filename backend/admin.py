@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Fridge, Picture
+from .models import Fridge, Picture, Favorite
 
 class PictureInLine(admin.TabularInline):
     model = Picture
@@ -15,3 +15,4 @@ class PictureAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('id',), }
 
 admin.site.register(Fridge, FridgeAdmin)
+admin.site.register(Favorite)

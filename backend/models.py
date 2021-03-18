@@ -26,3 +26,7 @@ class Picture(models.Model):
     created = models.DateTimeField(default=timezone.now)
     slug = models.SlugField(max_length=250, unique_for_date='created', default='')
     fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE, related_name="pictures")
+
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE)
