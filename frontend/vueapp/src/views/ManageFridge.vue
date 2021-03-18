@@ -17,15 +17,14 @@
 
     <v-img :src="imageUrl" style="border: 1px dashed #ccc; height: 120px; width: 90px;" />
 
-    <v-textarea
+    <AddMenu/>
+
+    <!-- <v-textarea
       v-model="menus"
       label="Menus"
       :error-messages="menusErrors"
-      :counter="300"
       clearable
-      @input="$v.menus.$touch()"
-      @blur="$v.menus.$touch()"
-    ></v-textarea>
+    ></v-textarea> -->
       
     <v-textarea
       v-model="description"
@@ -56,11 +55,13 @@
   import { getAPI } from '../axios-api'
   import { mapState } from 'vuex'
   import { maxLength } from 'vuelidate/lib/validators'
+  import AddMenu from '../components/AddMenu'
 
   export default {
-    name: 'ContactUs',
+    name: 'ManageFridge',
 
     components: {
+      AddMenu,
     },
 
     data () {
@@ -101,7 +102,7 @@
 
     validations: {
       menus: {
-        maxLength: maxLength(300),
+        maxLength: maxLength(20),
       },
       description: {
         maxLength: maxLength(300),
