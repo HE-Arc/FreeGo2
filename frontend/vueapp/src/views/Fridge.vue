@@ -15,13 +15,7 @@
           <v-img v-bind:src="picture.image" :aspect-ration="3/4"></v-img>
         </v-carousel-item>
       </v-carousel>
-
-      <v-card>
-        <v-card-title>Menus</v-card-title>
-        <v-card-text>{{ APIData.menu_list }}</v-card-text>
-        <v-treeview :menus="APIData.menu_list"></v-treeview>
-        
-      </v-card>
+      <v-treeview :items="APIData.menu_list.items"></v-treeview>
       
     </v-card>
 </template>

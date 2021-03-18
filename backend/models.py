@@ -9,7 +9,7 @@ def user_directory_path(instance, filename):
 
 class Fridge(models.Model):
     def menu_list_default():
-        return {'menus': [{'name': 'Menu 1', 'children': [{'name': 'cacahouètes'}, {'name': 'lactose'}, ]}, {'name': 'Menu 2', 'children': [{'name': 'lactose'},]}]}
+        return {'items': [{'name': 'Menu 1', 'children': [{'name': 'cacahouètes'}, {'name': 'lactose'}, ]}, {'name': 'Menu 2', 'children': [{'name': 'lactose'},]}]}
     
     name = models.CharField(max_length=250)
     my_maps_description = models.TextField(default="My Maps description")
