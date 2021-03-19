@@ -35,7 +35,7 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG', default=False)
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0', 'tb220.srvz-webapp.he-arc.ch']
 
 # Application definition
 
@@ -72,6 +72,16 @@ CORS_ORIGIN_WHITELIST = (
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'contenttype',
 ]
+
+CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_SECURE = True
+
+# 3600 = 1 hour
+SECURE_HSTS_SECONDS = 60
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_SSL_REDIRECT = False # TODO: Should be True for production, or set up a reverse-proxy server / load balancer
+SECURE_HSTS_PRELOAD = True
 
 ROOT_URLCONF = 'freego.urls'
 
