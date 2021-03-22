@@ -5,6 +5,7 @@ class PictureInLine(admin.TabularInline):
     model = Picture
 
 class FridgeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'last_modified')
     inlines = [
         PictureInLine,
     ]

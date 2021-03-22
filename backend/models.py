@@ -16,6 +16,7 @@ class Fridge(models.Model):
     manager_description = models.TextField(default="Manager description")
     menu_list = models.JSONField(default=menu_list_default, blank=True)
     coordinates = models.PointField(default=Point(0, 0), srid=4326, geography=True)
+    last_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
