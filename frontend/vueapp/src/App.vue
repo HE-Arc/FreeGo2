@@ -19,6 +19,7 @@
   import Vue from 'vue'
   import Vuelidate from 'vuelidate'
   Vue.use(Vuelidate)
+  Vue.config.devtools = true
 
   export default {
     name: 'App',
