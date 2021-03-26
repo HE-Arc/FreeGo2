@@ -22,5 +22,11 @@ class FavoriteViewSet(viewsets.ModelViewSet):
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializer
 
+    def get_queryset(self):
+        user = self.request.query_params.get('user')
+        fridge = self.request.query_params.get('fridge')
+        queryset = Favorite.objects.filter(user__id=user).filter(fridge__id=fridge)
+        return queryset
+
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer

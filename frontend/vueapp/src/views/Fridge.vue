@@ -22,7 +22,6 @@
 
 <script>
   import { getAPI } from '../axios-api'
-  import { mapState } from 'vuex'
 
   export default {
     name: 'Fridge',
@@ -32,13 +31,13 @@
     },
     
     data: () => ({
-      isFavorite: false,
-      fridgeData: null,
+      isFavorite: null,
+      fridgeData: false,
     }),
 
-    computed: mapState(['userId']),
     
     created () {
+      // TODO: Perform concurrent requests instead ?
       getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))
       .then(response => {
         this.fridgeData = response.data
@@ -49,9 +48,8 @@
             fridge: this.fridgeData.id
           }
         })
-        .then(response =>{
-          console.log(response)
-          this.isFavorite = response.data.isActive
+        .then(response => {
+          response.data[0] ? this.isFavorite = response.data[0].isActive : null
         })
         .catch(err => {
           console.log(err)
@@ -61,8 +59,6 @@
       .catch(err => {
         console.log(err)
       })
-
-      
     },
 
     methods: {
