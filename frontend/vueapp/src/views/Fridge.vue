@@ -2,7 +2,7 @@
   <v-card v-if="fridgeData">
     
     <v-card-title>
-      <v-btn icon @click="isFavorite = !isFavorite">
+      <v-btn icon @click="favoriteClick">
         <v-icon color="primary" large>{{ isFavorite ? 'mdi-star' : 'mdi-star-outline' }}</v-icon>
       </v-btn>
       {{ fridgeData.name }}
@@ -22,6 +22,7 @@
 
 <script>
   import { getAPI } from '../axios-api'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'Fridge',
@@ -34,15 +35,49 @@
       isFavorite: false,
       fridgeData: null,
     }),
+
+    computed: mapState(['userId']),
     
     created () {
       getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))
       .then(response => {
         this.fridgeData = response.data
+
+        getAPI.get('/favorite/', {
+          params: {
+            user: this.$store.state.userId,
+            fridge: this.fridgeData.id
+          }
+        })
+        .then(response =>{
+          console.log(response)
+          this.isFavorite = response.data.isActive
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
       })
       .catch(err => {
         console.log(err)
       })
+
+      
+    },
+
+    methods: {
+      favoriteClick() {
+        getAPI.post('/favorite/', {
+          fridge: this.fridgeData
+        })
+        .then(response => {
+          console.log(response)
+          this.isFavorite = !this.isFavorite
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
     },
   }
 </script>
