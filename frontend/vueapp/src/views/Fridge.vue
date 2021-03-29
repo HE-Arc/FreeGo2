@@ -31,6 +31,7 @@
     },
     
     data: () => ({
+      favoriteId: null,
       isFavorite: null,
       fridgeData: false,
     }),
@@ -49,7 +50,10 @@
           }
         })
         .then(response => {
-          response.data[0] ? this.isFavorite = response.data[0].isActive : null
+          if (response.data[0]){
+            this.isFavorite = true
+            this.favoriteId = response.data[0].id
+          }
         })
         .catch(err => {
           console.log(err)
@@ -63,16 +67,30 @@
 
     methods: {
       favoriteClick() {
-        getAPI.post('/favorite/', {
-          fridge: this.fridgeData
-        })
-        .then(response => {
-          console.log(response)
-          this.isFavorite = !this.isFavorite
-        })
-        .catch(err => {
-          console.log(err)
-        })
+        if (this.favoriteId) {
+          getAPI.delete('/favorite/'.concat(this.favoriteId).concat('/'))
+          .then(response => {
+            console.log(response)
+            this.isFavorite = false
+            this.favoriteId = null
+          })
+          .catch(err => {
+            console.log(err)
+          })
+        }
+        else {
+          getAPI.post('/favorite/', {
+            user: this.$store.state.userId,
+            fridge: this.fridgeData.id
+          })
+          .then(response => {
+            this.isFavorite = true
+            this.favoriteId = response.data
+          })
+          .catch(err => {
+            console.log(err)
+          })
+        }
       }
     },
   }

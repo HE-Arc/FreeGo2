@@ -31,4 +31,3 @@ class Picture(models.Model):
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE)
-    isActive = models.BooleanField(default=True)
