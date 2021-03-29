@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import Fridge, Picture, Favorite
+from .models import Fridge, Picture, Favorite, Manager
 
 class PictureSerializer(serializers.ModelSerializer):
     fridge = serializers.StringRelatedField()
@@ -23,6 +23,14 @@ class FavoriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Favorite
+        fields = '__all__'
+
+class ManagerSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    fridge = serializers.StringRelatedField()
+
+    class Meta:
+        model = Manager
         fields = '__all__'
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

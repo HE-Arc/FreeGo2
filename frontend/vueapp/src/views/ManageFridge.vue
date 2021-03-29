@@ -109,6 +109,15 @@
           this.submitStatus = 'ERROR'
         } else {
           // TODO: submit logic here
+          /* getAPI.put('/fridge/'.concat().concat('/'), {
+          })
+          .then(response => {
+            console.log(response)
+          })
+          .catch(err => {
+            console.log(err)
+          }) */
+
           this.submitStatus = 'PENDING'
           setTimeout(() => {
             this.submitStatus = 'OK'

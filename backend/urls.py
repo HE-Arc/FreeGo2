@@ -8,6 +8,7 @@ router = routers.DefaultRouter()
 router.register(r'fridge', views.FridgeViewSet)
 router.register(r'picture', views.PictureViewSet)
 router.register(r'favorite', views.FavoriteViewSet)
+router.register(r'manager', views.ManagerViewSet)
 
 urlpatterns = [
     path('api-token/', MyTokenObtainPairView.as_view()),
