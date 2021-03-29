@@ -45,9 +45,8 @@ class ManagerViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.query_params.get('user')
-        fridge = self.request.query_params.get('fridge')
-        if (user and fridge):
-            self.queryset = Manager.objects.filter(user__id=user).filter(fridge__id=fridge)
+        if (user):
+            self.queryset = Manager.objects.filter(user__id=user)
         return self.queryset
 
     def create(self, request):

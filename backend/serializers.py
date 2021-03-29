@@ -27,7 +27,8 @@ class FavoriteSerializer(serializers.ModelSerializer):
 
 class ManagerSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
-    fridge = serializers.StringRelatedField()
+    fridge = serializers.PrimaryKeyRelatedField(queryset=Fridge.objects.all())
+    fridge_name = serializers.StringRelatedField(source='fridge', read_only=True)
 
     class Meta:
         model = Manager

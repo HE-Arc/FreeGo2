@@ -58,7 +58,7 @@ export default new VueRouter({
             component: Donations,
         },
         {
-            path: '/manageFridge',
+            path: '/manageFridge/:fridgeId',
             name: 'manageFridge',
             component: ManageFridge,
         },

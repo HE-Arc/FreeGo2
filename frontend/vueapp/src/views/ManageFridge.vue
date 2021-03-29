@@ -1,46 +1,49 @@
 <template>
     
-  <form>
-    <!-- TODO: Get manager's fridge through APIData and fill the form with already existing data -->
-    <h1>{{ APIData.name }}</h1>
+  <v-card>
+    <v-card-title>{{ APIData.name }}</v-card-title>
+    <v-card-text>
+      <form>
 
-    <v-file-input
-      accept="image/png, image/jpeg, image/bmp"
-      placeholder="Photos de votre Free Go"
-      prepend-icon="mdi-camera"
-      label="Photos"
-      small-chips
-      multiple
-      clearable
-      @change="previewImages"
-    ></v-file-input>
+        <v-file-input
+          accept="image/png, image/jpeg, image/bmp"
+          placeholder="Photos de votre Free Go"
+          prepend-icon="mdi-camera"
+          label="Photos"
+          small-chips
+          multiple
+          clearable
+          @change="previewImages"
+        ></v-file-input>
 
-    <v-img :src="imageUrl" style="border: 1px dashed #ccc; height: 120px; width: 90px;" />
+        <v-img :src="imageUrl" style="border: 1px dashed #ccc; height: 120px; width: 90px;" />
 
-    <AddMenu/>
-      
-    <v-textarea
-      v-model="description"
-      label="Panneaux d'affichage"
-      :error-messages="descriptionErrors"
-      :counter="300"
-      clearable
-      @input="$v.description.$touch()"
-      @blur="$v.description.$touch()"
-    ></v-textarea>
+        <AddMenu/>
+          
+        <v-textarea
+          v-model="description"
+          label="Panneaux d'affichage"
+          :error-messages="descriptionErrors"
+          :counter="300"
+          clearable
+          @input="$v.description.$touch()"
+          @blur="$v.description.$touch()"
+        ></v-textarea>
 
-    <v-btn
-      class="mr-4"
-      :disabled="submitStatus === 'PENDING'"
-      @click="submit"
-      color="primary"
-    >
-      Enregistrer
-    </v-btn>
-    <p class="typo__p" v-if="submitStatus === 'OK'">Changements enregistrés !</p>
-    <p class="typo__p" v-if="submitStatus === 'ERROR'">Veuillez corriger les erreurs.</p>
-    <p class="typo__p" v-if="submitStatus === 'PENDING'">Envoi...</p>
-  </form>
+        <v-btn
+          class="mr-4"
+          :disabled="submitStatus === 'PENDING'"
+          @click="submit"
+          color="primary"
+        >
+          Enregistrer
+        </v-btn>
+        <p class="typo__p" v-if="submitStatus === 'OK'">Changements enregistrés !</p>
+        <p class="typo__p" v-if="submitStatus === 'ERROR'">Veuillez corriger les erreurs.</p>
+        <p class="typo__p" v-if="submitStatus === 'PENDING'">Envoi...</p>
+      </form>
+    </v-card-text>
+  </v-card>
 
 </template>
 
@@ -84,7 +87,7 @@
     },
 
     created () {
-      getAPI.get(((this.$route.params.fridgeId) ? '/fridge/'.concat(this.$route.params.fridgeId) : '/fridge/'), )
+      getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))
       .then(response => {
         this.$store.state.APIData = response.data
       })
