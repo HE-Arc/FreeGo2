@@ -1,7 +1,7 @@
 <template>
     
   <v-card>
-    <v-card-title>{{ APIData.name }}</v-card-title>
+    <v-card-title>{{ fridge }}</v-card-title>
     <v-card-text>
       <form>
 
@@ -18,13 +18,14 @@
 
         <v-img :src="imageUrl" style="border: 1px dashed #ccc; height: 120px; width: 90px;" />
 
-        <AddMenu/>
+        <AddMenu></AddMenu>
           
         <v-textarea
           v-model="description"
           label="Panneaux d'affichage"
           :error-messages="descriptionErrors"
           :counter="300"
+          hint="Informez les utilisateurs des horaires spéciaux !"
           clearable
           @input="$v.description.$touch()"
           @blur="$v.description.$touch()"
@@ -49,7 +50,6 @@
 
 <script>
   import { getAPI } from '../axios-api'
-  import { mapState } from 'vuex'
   import { maxLength } from 'vuelidate/lib/validators'
   import AddMenu from '../components/AddMenu'
 
@@ -62,26 +62,20 @@
 
     data () {
       return {
+        fridge: '',
         images: null,
         imageUrl: '',
-        menus: '',
+        menus: null,
         description: '',
         submitStatus: null,
       }
     },
 
     computed: {
-      ...mapState(['APIData']),
       descriptionErrors () {
         const errors = []
         if (!this.$v.description.$dirty) return errors
         !this.$v.description.maxLength && errors.push('Le texte est trop long !')
-        return errors
-      },
-      menusErrors () {
-        const errors = []
-        if (!this.$v.menus.$dirty) return errors
-        !this.$v.menus.maxLength && errors.push('Le texte des menus est trop long !')
         return errors
       },
     },
@@ -89,7 +83,9 @@
     created () {
       getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))
       .then(response => {
-        this.$store.state.APIData = response.data
+        this.fridge = response.data.name
+        this.menus = response.data.menu_list.items
+        this.description = response.data.manager_description
       })
       .catch(err => {
         console.log(err)
@@ -97,9 +93,6 @@
     },
 
     validations: {
-      menus: {
-        maxLength: maxLength(20),
-      },
       description: {
         maxLength: maxLength(300),
       },
