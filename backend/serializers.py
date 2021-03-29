@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Fridge, Picture, Favorite
 
 class PictureSerializer(serializers.ModelSerializer):
@@ -23,3 +24,11 @@ class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorite
         fields = '__all__'
+
+class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        # Default result (access/refresh tokens)
+        data = super(MyTokenObtainPairSerializer, self).validate(attrs)
+        # Custom data
+        data.update({'userId': self.user.id})
+        return data

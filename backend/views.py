@@ -1,10 +1,12 @@
-from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
 from .models import Fridge, Picture, Favorite
-from .serializers import FridgeSerializer, PictureSerializer, FavoriteSerializer
+from django.contrib.auth.models import User
+from .serializers import FridgeSerializer, PictureSerializer, FavoriteSerializer, MyTokenObtainPairSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
+from django.http import HttpResponse
 
 class FridgeViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
@@ -21,3 +23,21 @@ class FavoriteViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Favorite.objects.all()
     serializer_class = FavoriteSerializer
+
+    def get_queryset(self):
+        user = self.request.query_params.get('user')
+        fridge = self.request.query_params.get('fridge')
+        if (user and fridge):
+            self.queryset = Favorite.objects.filter(user__id=user).filter(fridge__id=fridge)
+        return self.queryset
+
+    def create(self, request):
+        new_favorite = Favorite()
+        new_favorite = Favorite()
+        new_favorite.user = User.objects.filter(id=request.data['user'])[0]
+        new_favorite.fridge = Fridge.objects.filter(id=request.data['fridge'])[0]
+        new_favorite.save()
+        return HttpResponse(new_favorite.id)
+
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer

@@ -1,49 +1,97 @@
 <template>
-    <v-card>
-      
-      <v-card-title>
-        <v-btn icon @click="isFavorite = !isFavorite">
-          <v-icon color="primary" large>{{ isFavorite ? 'mdi-star' : 'mdi-star-outline' }}</v-icon>
-        </v-btn>
-        {{ APIData.name }}
-      </v-card-title>
-      <v-card-text>{{ APIData.my_maps_description }}</v-card-text>
-      <v-card-text>{{ APIData.manager_description }}</v-card-text>
+  <v-card v-if="fridgeData">
+    
+    <v-card-title>
+      <v-btn icon @click="favoriteClick">
+        <v-icon color="primary" large>{{ isFavorite ? 'mdi-star' : 'mdi-star-outline' }}</v-icon>
+      </v-btn>
+      {{ fridgeData.name }}
+    </v-card-title>
+    <v-card-text>{{ fridgeData.my_maps_description }}</v-card-text>
+    <v-card-text>{{ fridgeData.manager_description }}</v-card-text>
 
-      <v-carousel>
-        <v-carousel-item v-for="picture in APIData.pictures" :key=picture.image>
-          <v-img v-bind:src="picture.image" :aspect-ration="3/4"></v-img>
-        </v-carousel-item>
-      </v-carousel>
-      <v-treeview :items="APIData.menu_list.items"></v-treeview>
-      
-    </v-card>
+    <v-carousel>
+      <v-carousel-item v-for="picture in fridgeData.pictures" :key=picture.image>
+        <v-img v-bind:src="picture.image" :aspect-ration="3/4"></v-img>
+      </v-carousel-item>
+    </v-carousel>
+
+    <v-treeview :items="fridgeData.menu_list.items"></v-treeview>
+  </v-card>
 </template>
 
 <script>
   import { getAPI } from '../axios-api'
-  import { mapState } from 'vuex'
 
   export default {
     name: 'Fridge',
 
     components: {
+
     },
     
     data: () => ({
-      isFavorite: false,
+      favoriteId: null,
+      isFavorite: null,
+      fridgeData: false,
     }),
 
-    computed: mapState(['APIData']),
     
     created () {
-      getAPI.get(((this.$route.params.fridgeId) ? '/fridge/'.concat(this.$route.params.fridgeId) : '/fridge/'), )
+      // TODO: Perform concurrent requests instead ?
+      getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))
       .then(response => {
-        this.$store.state.APIData = response.data
+        this.fridgeData = response.data
+
+        getAPI.get('/favorite/', {
+          params: {
+            user: this.$store.state.userId,
+            fridge: this.fridgeData.id
+          }
+        })
+        .then(response => {
+          if (response.data[0]){
+            this.isFavorite = true
+            this.favoriteId = response.data[0].id
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
       })
       .catch(err => {
         console.log(err)
       })
+    },
+
+    methods: {
+      favoriteClick() {
+        if (this.favoriteId) {
+          getAPI.delete('/favorite/'.concat(this.favoriteId).concat('/'))
+          .then(response => {
+            console.log(response)
+            this.isFavorite = false
+            this.favoriteId = null
+          })
+          .catch(err => {
+            console.log(err)
+          })
+        }
+        else {
+          getAPI.post('/favorite/', {
+            user: this.$store.state.userId,
+            fridge: this.fridgeData.id
+          })
+          .then(response => {
+            this.isFavorite = true
+            this.favoriteId = response.data
+          })
+          .catch(err => {
+            console.log(err)
+          })
+        }
+      }
     },
   }
 </script>
