@@ -12,6 +12,7 @@ class PictureSerializer(serializers.ModelSerializer):
 
 class FridgeSerializer(serializers.ModelSerializer):
     pictures = PictureSerializer(many=True)
+    menu_list = serializers.JSONField()
 
     class Meta:
         model = Fridge

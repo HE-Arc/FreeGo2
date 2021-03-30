@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django_json_widget.widgets import JSONEditorWidget
+from django.db import models
 from .models import Fridge, Picture, Favorite, Manager
 
 class PictureInLine(admin.TabularInline):
@@ -9,6 +11,9 @@ class FridgeAdmin(admin.ModelAdmin):
     inlines = [
         PictureInLine,
     ]
+    formfield_overrides = {
+        models.JSONField: {'widget': JSONEditorWidget},
+    }
 
 @admin.register(Picture)
 class PictureAdmin(admin.ModelAdmin):

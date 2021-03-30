@@ -18,7 +18,7 @@
 
         <v-img :src="imageUrl" style="border: 1px dashed #ccc; height: 120px; width: 90px;" />
 
-        <AddMenu></AddMenu>
+        <AddMenu v-if="menusJson" :menusJson="menusJson" ></AddMenu>
           
         <v-textarea
           v-model="description"
@@ -65,7 +65,7 @@
         fridge: '',
         images: null,
         imageUrl: '',
-        menus: null,
+        menusJson: null,
         description: '',
         submitStatus: null,
       }
@@ -84,7 +84,7 @@
       getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))
       .then(response => {
         this.fridge = response.data.name
-        this.menus = response.data.menu_list.items
+        this.menusJson = response.data.menu_list.items
         this.description = response.data.manager_description
       })
       .catch(err => {

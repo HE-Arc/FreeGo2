@@ -36,7 +36,6 @@
       fridgeData: false,
     }),
 
-    
     created () {
       // TODO: Perform concurrent requests instead ?
       getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))
