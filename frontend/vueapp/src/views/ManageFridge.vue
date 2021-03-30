@@ -7,7 +7,7 @@
 
         <v-file-input
           accept="image/png, image/jpeg, image/bmp"
-          placeholder="Photos de votre Free Go"
+          placeholder="Photos du Free Go"
           prepend-icon="mdi-camera"
           label="Photos"
           small-chips
@@ -16,7 +16,12 @@
           @change="previewImages"
         ></v-file-input>
 
-        <v-img :src="imageUrl" style="border: 1px dashed #ccc; height: 120px; width: 90px;" />
+        <v-img 
+          v-for="i in imagesAmount"
+          :key="i"
+          :src="imagesUrl[i-1]" 
+          style="border: 1px dashed #ccc; height: 120px; width: 90px;" 
+        />
 
         <AddMenu v-if="menusJson" :menusJson="menusJson" ></AddMenu>
           
@@ -63,8 +68,8 @@
     data () {
       return {
         fridge: '',
-        images: null,
-        imageUrl: '',
+        imagesAmount: null,
+        imagesUrl: [],
         menusJson: null,
         description: '',
         submitStatus: null,
@@ -86,6 +91,11 @@
         this.fridge = response.data.name
         this.menusJson = response.data.menu_list.items
         this.description = response.data.manager_description
+        response.data.pictures.forEach(picture => {
+          this.imagesUrl.push(picture.image)
+        })
+        console.log(this.imagesUrl.length)
+        this.imagesAmount = this.imagesUrl.length
       })
       .catch(err => {
         console.log(err)
@@ -125,16 +135,17 @@
         
         files.forEach(file => {
           reader.onload = (e) => {
-            this.imageUrl=e.target.result;
-          };
-          reader.readAsDataURL(file);
+            this.imagesUrl.push(e.target.result)
+            this.imagesAmount++
+          }
+          reader.readAsDataURL(file)
         });
       },
       previewImages(files) {
         if (!files) {
           return;
         }
-        this.createImage(files);
+        this.createImage(files)
       },
     },
   }
