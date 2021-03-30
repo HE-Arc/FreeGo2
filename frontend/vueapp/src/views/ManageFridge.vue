@@ -123,46 +123,44 @@
     },
 
     methods: {
+      createMenusJSON () {
+        // Create a json object to use for our menus and allergens
+        let menusText = '{"items": ['
+
+        let i = 0
+        this.menus.forEach(menu => {
+          menusText += '{"name": "' + menu + '", "children": ['
+          let allergenIndex = 0
+          this.allergens[i].forEach(allergen => {
+            menusText += '{"name": "' + allergen + '"}'
+            if(allergenIndex < this.allergens[i].length-1){
+              menusText += ','
+            }
+            allergenIndex++
+          })
+          menusText += ']}'
+          if(i < this.menusAmount-2){
+              menusText += ','
+            }
+          i++
+        })
+        menusText += ']}'
+
+        return JSON.parse(menusText)
+      },
+
       submit() {
         this.$v.$touch()
         if (this.$v.$invalid) {
           this.submitStatus = 'ERROR'
         } else {
-          // TODO: submit logic here
           getAPI.patch('/fridge/'.concat(this.fridgeId).concat('/'), {
               manager_description: this.description,
-              
+              menu_list: this.createMenusJSON(),
+              // TODO: Submit pictures
           })
           .then(response => {
             console.log(response)
-
-            let menusText = '{"items": ['
-
-            let i = 0
-            this.menus.forEach(menu => {
-              menusText += '{"name": "' + menu + '", "children": ['
-              let allergenIndex = 0
-              this.allergens[i].forEach(allergen => {
-                menusText += '{"name": "' + allergen + '"}'
-                if(allergenIndex < this.allergens[i].length-1){
-                  menusText += ','
-                }
-                allergenIndex++
-              })
-              menusText += ']}'
-              if(i < this.menusAmount-2){
-                  menusText += ','
-                }
-              i++
-            })
-
-            menusText += ']}'
-
-            console.log(menusText)
-            let menusJson = JSON.parse(menusText)
-
-            console.log(menusJson)
-            
           })
           .catch(err => {
             console.log(err)

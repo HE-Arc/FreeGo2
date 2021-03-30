@@ -73,7 +73,8 @@
         this.menusAmount = this.menus.length + 1
       },
       addAllergens(allergens, i) {
-        this.allergens[i-1] = allergens
+        this.allergens[i-1] = Array(allergens.split(','))
+        console.log(this.allergens)
       },
     }
   }
