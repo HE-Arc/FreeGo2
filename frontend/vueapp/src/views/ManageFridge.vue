@@ -23,7 +23,7 @@
           style="border: 1px dashed #ccc; height: 120px; width: 90px;" 
         />
 
-        <AddMenu v-if="menusJson" :menusJson="menusJson" ></AddMenu>
+        <AddMenu v-if="menus" :menus="menus" :allergens="allergens" :menusAmount="menusAmount"></AddMenu>
           
         <v-textarea
           v-model="description"
@@ -68,9 +68,13 @@
     data () {
       return {
         fridge: '',
+        fridgeId: null,
         imagesAmount: null,
         imagesUrl: [],
         menusJson: null,
+        menusAmount: null,
+        menus: [],
+        allergens: [],
         description: '',
         submitStatus: null,
       }
@@ -89,17 +93,27 @@
       getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))
       .then(response => {
         this.fridge = response.data.name
+        this.fridgeId = response.data.id
         this.menusJson = response.data.menu_list.items
         this.description = response.data.manager_description
         response.data.pictures.forEach(picture => {
           this.imagesUrl.push(picture.image)
         })
-        console.log(this.imagesUrl.length)
         this.imagesAmount = this.imagesUrl.length
+
+        this.menusJson.forEach(menu => {
+          this.menus.push(menu.name)
+          let menuAllergens = []
+          menu.children.forEach(allergen => {
+            menuAllergens.push(allergen.name)
+          })
+          this.allergens.push(menuAllergens)
+        })
+        this.menusAmount = this.menusJson.length + 1
       })
       .catch(err => {
         console.log(err)
-      })
+      })      
     },
 
     validations: {
@@ -115,14 +129,44 @@
           this.submitStatus = 'ERROR'
         } else {
           // TODO: submit logic here
-          /* getAPI.put('/fridge/'.concat().concat('/'), {
+          getAPI.patch('/fridge/'.concat(this.fridgeId).concat('/'), {
+              manager_description: this.description,
+              
           })
           .then(response => {
             console.log(response)
+
+            let menusText = '{"items": ['
+
+            let i = 0
+            this.menus.forEach(menu => {
+              menusText += '{"name": "' + menu + '", "children": ['
+              let allergenIndex = 0
+              this.allergens[i].forEach(allergen => {
+                menusText += '{"name": "' + allergen + '"}'
+                if(allergenIndex < this.allergens[i].length-1){
+                  menusText += ','
+                }
+                allergenIndex++
+              })
+              menusText += ']}'
+              if(i < this.menusAmount-2){
+                  menusText += ','
+                }
+              i++
+            })
+
+            menusText += ']}'
+
+            console.log(menusText)
+            let menusJson = JSON.parse(menusText)
+
+            console.log(menusJson)
+            
           })
           .catch(err => {
             console.log(err)
-          }) */
+          })
 
           this.submitStatus = 'PENDING'
           setTimeout(() => {
@@ -130,6 +174,7 @@
           }, 500)
         }
       },
+
       createImage(files) {
         const reader = new FileReader();
         
@@ -141,6 +186,7 @@
           reader.readAsDataURL(file)
         });
       },
+      
       previewImages(files) {
         if (!files) {
           return;

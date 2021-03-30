@@ -10,14 +10,14 @@
           :counter="20" 
           :error-messages="menusErrors" 
           v-on:change="addMenu($event, i)" 
-          @input="$v.menusJson.$touch()" 
-          @blur="$v.menusJson.$touch()"
+          @input="$v.menus.$touch()" 
+          @blur="$v.menus.$touch()"
         ></v-text-field>
       </v-col>
       <v-col>
         <v-text-field 
           v-model="allergens[i-1]"
-          :disabled="!menusJson[i-1]" 
+          :disabled="!menus[i-1]" 
           dense label="Allergènes" 
           placeholder="lactose, noix..." 
           v-on:change="addAllergens($event, i)"
@@ -34,60 +34,46 @@
     name: 'AddMenu',
 
     data: () => ({
-      menusAmount: null,
-      menus: [],
-      allergens: [],
     }),
 
     props: {
-      menusJson: Array
+      menus: Array,
+      allergens: Array,
+      menusAmount: Number,
     },
 
     computed: {
       menusErrors () {
         const errors = []
-        if (!this.$v.menusJson.$dirty) return errors
-        !this.$v.menusJson.maxLength && errors.push('Le nom du menu est trop long !')
+        if (!this.$v.menus.$dirty) return errors
+        !this.$v.menus.maxLength && errors.push('Le nom du menu est trop long !')
         return errors
       },
     },
 
     validations: {
-      menusJson: {
+      menus: {
         maxLength: maxLength(20),
       },
     },
 
-    created() {
-      this.menusAmount = this.menusJson.length + 1
-      this.menusJson.forEach(menu => {
-        this.menus.push(menu.name)
-        let menuAllergens = []
-        menu.children.forEach(allergen => {
-          menuAllergens.push(allergen.name)
-        })
-        this.allergens.push(menuAllergens)
-      })
-    },
-
     methods: {
-      addMenu(menusJson, i) {
+      addMenu(menus, i) {
         i -= 1
         // If menu is not an empty string, add it to the menus array. Otherwise, put null instead
-        this.menusJson[i] = (menusJson ? menusJson : this.menusJson[i] = null)
+        this.menus[i] = (menus ? menus : this.menus[i] = null)
         this.checkMenusIntegrity()
       },
       checkMenusIntegrity() {
         // Delete null entries at the end of the menus array
-        while(this.menusJson[this.menusJson.length - 1] == null && this.menusJson.length > 0){
-          this.menusJson.pop()
+        while(this.menus[this.menus.length - 1] == null && this.menus.length > 0){
+          this.menus.pop()
         }
         // Then updates the amount of menu fields to display
-        this.menusAmount = this.menusJson.length + 1
+        this.menusAmount = this.menus.length + 1
       },
       addAllergens(allergens, i) {
-        i -= 1
-        this.allergens[i] = allergens
+        this.allergens[i-1] = allergens
       },
     }
   }
