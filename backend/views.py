@@ -1,8 +1,8 @@
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
-from .models import Fridge, Picture, Favorite, Manager
+from .models import Fridge, Picture, Favorite, Manager, Notification
 from django.contrib.auth.models import User
-from .serializers import FridgeSerializer, PictureSerializer, FavoriteSerializer, ManagerSerializer, MyTokenObtainPairSerializer
+from .serializers import FridgeSerializer, PictureSerializer, FavoriteSerializer, ManagerSerializer, MyTokenObtainPairSerializer, NotificationSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
@@ -27,8 +27,10 @@ class FavoriteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.query_params.get('user')
         fridge = self.request.query_params.get('fridge')
-        if (user and fridge):
-            self.queryset = Favorite.objects.filter(user__id=user).filter(fridge__id=fridge)
+        if (user):
+            self.queryset = Favorite.objects.filter(user__id=user)
+        if (fridge):
+            self.queryset = Favorite.objects.filter(fridge__id=fridge)
         return self.queryset
 
     def create(self, request):
@@ -58,3 +60,8 @@ class ManagerViewSet(viewsets.ModelViewSet):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+class NotificationViewSet(viewsets.ModelViewSet):
+    renderer_classes = [JSONRenderer,]
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer

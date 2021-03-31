@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import Fridge, Picture, Favorite, Manager
+from .models import Fridge, Picture, Favorite, Manager, Notification
+from django.contrib.auth.models import User
 
 class PictureSerializer(serializers.ModelSerializer):
     fridge = serializers.StringRelatedField()
@@ -19,7 +20,7 @@ class FridgeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class FavoriteSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField()
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     fridge = serializers.StringRelatedField()
 
     class Meta:
@@ -27,7 +28,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ManagerSerializer(serializers.ModelSerializer):
-    user = serializers.StringRelatedField()
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     fridge = serializers.PrimaryKeyRelatedField(queryset=Fridge.objects.all())
     fridge_name = serializers.StringRelatedField(source='fridge', read_only=True)
 
@@ -42,3 +43,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         # Custom data
         data.update({'userId': self.user.id})
         return data
+
+class NotificationSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    fridge = serializers.PrimaryKeyRelatedField(queryset=Fridge.objects.all())
+    fridge_name = serializers.StringRelatedField(source='fridge', read_only=True)
+
+    class Meta:
+        model = Notification
+        fields = '__all__'

@@ -164,6 +164,34 @@
           })
           .then(response => {
             console.log(response)
+
+            getAPI.get('/favorite/', {
+              params:{
+                fridge: this.fridgeId,
+              }
+            })
+            .then(response => {
+
+              for(let i=0; i < response.data.length; i++){
+                console.log(response.data[i].fridge)
+                console.log(response.data[i].user.pk)
+                getAPI.post('/notification/', {
+                  fridge: this.fridgeId,
+                  user: response.data[i].user,
+                })
+                .then(response => {
+                  console.log(response)
+                })
+                .catch(err => {
+                  console.log(err)
+                })
+              }
+              
+            })
+            .catch(err => {
+              console.log(err)
+            })
+
           })
           .catch(err => {
             console.log(err)

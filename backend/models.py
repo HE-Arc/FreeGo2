@@ -21,7 +21,6 @@ class Fridge(models.Model):
     def __str__(self):
         return self.name
 
-
 class Picture(models.Model):
     image = models.ImageField(upload_to=user_directory_path)
     created = models.DateTimeField(default=timezone.now)
@@ -38,3 +37,7 @@ class Manager(models.Model):
 
     def __str__(self):
         return self.fridge.name
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE)
