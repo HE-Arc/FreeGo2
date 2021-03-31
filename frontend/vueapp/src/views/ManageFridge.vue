@@ -65,7 +65,7 @@
       AddMenu,
     },
 
-    data () {
+    data() {
       return {
         fridge: '',
         fridgeId: null,
@@ -89,7 +89,7 @@
       },
     },
 
-    created () {
+    created() {
       getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))
       .then(response => {
         this.fridge = response.data.name
@@ -173,14 +173,9 @@
             .then(response => {
 
               for(let i=0; i < response.data.length; i++){
-                console.log(response.data[i].fridge)
-                console.log(response.data[i].user.pk)
                 getAPI.post('/notification/', {
                   fridge: this.fridgeId,
                   user: response.data[i].user,
-                })
-                .then(response => {
-                  console.log(response)
                 })
                 .catch(err => {
                   console.log(err)

@@ -65,3 +65,12 @@ class NotificationViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
+
+    def get_queryset(self):
+        user = self.request.query_params.get('user')
+        fridge = self.request.query_params.get('fridge')
+        if (user):
+            self.queryset = Favorite.objects.filter(user__id=user)
+        if (fridge):
+            self.queryset = Favorite.objects.filter(fridge__id=fridge)
+        return self.queryset

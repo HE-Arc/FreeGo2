@@ -1,7 +1,7 @@
 <template>
 
   <v-row>
-    <Map/>
+    <!-- <Map/> -->
     <v-btn icon @click="overlay = !overlay">
       <v-icon color="primary" large>mdi-information</v-icon>
     </v-btn>
@@ -39,14 +39,14 @@
 </template>
 
 <script>
-  import Map from '../components/Map'
+  /* import Map from '../components/Map' */
   import { mapState } from 'vuex'
 
   export default {
     name: 'Home',
 
     components: {
-      Map,
+      /* Map, */
     },
     
     data() {
