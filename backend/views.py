@@ -70,7 +70,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
         user = self.request.query_params.get('user')
         fridge = self.request.query_params.get('fridge')
         if (user):
-            self.queryset = Favorite.objects.filter(user__id=user)
+            self.queryset = Notification.objects.filter(user__id=user)
         if (fridge):
-            self.queryset = Favorite.objects.filter(fridge__id=fridge)
+            self.queryset = Notification.objects.filter(fridge__id=fridge)
         return self.queryset
