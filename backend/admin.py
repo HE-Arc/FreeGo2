@@ -18,7 +18,6 @@ class FridgeAdmin(admin.ModelAdmin):
 @admin.register(Picture)
 class PictureAdmin(admin.ModelAdmin):
     list_display = ('id', 'slug')
-    prepopulated_fields = {'slug': ('id',), }
 
 class FavoriteAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'fridge')

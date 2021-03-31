@@ -72,9 +72,11 @@ CORS_ORIGIN_WHITELIST = (
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'contenttype',
+    'X-CSRFTOKEN',
 ]
 
 CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_NAME = "csrftoken"
 
 SESSION_COOKIE_SECURE = True
 
@@ -162,7 +164,7 @@ if os.name == 'nt':
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_ROOT = public_root('static')
-STATIC_URL = env('STATIC_URL', default='static/')
+STATIC_URL = env('STATIC_URL', default='/static/')
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
@@ -180,4 +182,4 @@ REST_FRAMEWORK = {
 }
 
 MEDIA_ROOT = public_root('media')
-MEDIA_URL = env('MEDIA_URL', default='media/')
+MEDIA_URL = env('MEDIA_URL', default='/backend/media/')

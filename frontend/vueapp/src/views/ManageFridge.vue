@@ -157,7 +157,10 @@
           getAPI.patch('/fridge/'.concat(this.fridgeId).concat('/'), {
               manager_description: this.description,
               menu_list: this.createMenusJSON(),
-              // TODO: Submit pictures
+              /* pictures: {
+                fridge: this.fridgeId,
+                image: this.imagesUrl,
+              } */
           })
           .then(response => {
             console.log(response)
@@ -165,6 +168,20 @@
           .catch(err => {
             console.log(err)
           })
+
+          // TODO: Submit pictures
+          /* for(let i = 0; i < this.imagesUrl.length; i++){
+            getAPI.post('/media/fridges/', {
+              fridge: this.fridgeId,
+              image: this.imagesUrl[i],
+            })
+            .then(response => {
+              console.log(response)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          } */
 
           this.submitStatus = 'PENDING'
           setTimeout(() => {

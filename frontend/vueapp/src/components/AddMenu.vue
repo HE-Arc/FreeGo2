@@ -74,7 +74,6 @@
       },
       addAllergens(allergens, i) {
         this.allergens[i-1] = Array(allergens.split(','))
-        console.log(this.allergens)
       },
     }
   }
