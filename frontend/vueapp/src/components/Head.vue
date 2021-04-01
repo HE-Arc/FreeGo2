@@ -3,7 +3,9 @@
     <v-toolbar-title>Free Go</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-btn value="notifications" icon :to = "{ name:'notifications' }" v-if="accessToken!=null" exact>
-      {{ notificationsAmount.notificationsAmount }}<v-icon>{{ `${icon}` }}</v-icon>
+      {{ notificationsAmount }}
+      <v-icon v-if="notificationsAmount <= 0">mdi-bell</v-icon>
+      <v-icon v-if="notificationsAmount > 0">mdi-bell-ring</v-icon>
     </v-btn>
   </v-app-bar>
 </template>
@@ -16,7 +18,7 @@
 
     data() {
       return {
-        icon: 'mdi-bell',
+        icon: '',
       }
     },
 

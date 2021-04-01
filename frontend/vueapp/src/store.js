@@ -25,8 +25,14 @@ export default new Vuex.Store({
             state.refreshToken = null
             state.userId = null
         },
-        updateNotificationsAmount(state, {notificationsAmount: notificationsAmount}) {
-            state.notificationsAmount = notificationsAmount
+        updateNotificationsAmount(state, {notificationsAmount}) {
+            // For some reason notificationsAmount is a Number on first call and an object later...
+            if(notificationsAmount.notificationsAmount) {
+                state.notificationsAmount = notificationsAmount.notificationsAmount
+            }
+            else {
+                state.notificationsAmount = notificationsAmount
+            }
         }
     },
 
