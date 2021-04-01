@@ -4,11 +4,14 @@ import { getAPI } from './axios-api'
 
 Vue.use(Vuex)
 export default new Vuex.Store({
+    strict: true,
+
     state: {
         accessToken: null,
         refreshToken: null,
         userId: null,
         APIData: '',
+        notificationsAmount: null,
     },
 
     mutations: {
@@ -18,9 +21,12 @@ export default new Vuex.Store({
             state.userId = userId
         },
         destroyToken (state) {
-          state.accessToken = null
-          state.refreshToken = null
-          state.userId = null
+            state.accessToken = null
+            state.refreshToken = null
+            state.userId = null
+        },
+        updateNotificationsAmount(state, {notificationsAmount: notificationsAmount}) {
+            state.notificationsAmount = notificationsAmount
         }
     },
 
@@ -36,6 +42,7 @@ export default new Vuex.Store({
                 context.commit('destroyToken')
             }
         },
+
         userLogin (context, userCredentials) {
             return new Promise((resolve, reject) => {
                 getAPI.post('/api-token/', {
@@ -45,11 +52,27 @@ export default new Vuex.Store({
                 .then(response => {
                     context.commit('updateStorage', { access: response.data.access, refresh: response.data.refresh, userId: response.data.userId })
                     resolve()
+                    getAPI.get('/notification/', {
+                        params: {
+                            user: this.state.userId,
+                        }
+                    })
+                    .then(response => {
+                        context.commit('updateNotificationsAmount', {notificationsAmount: response.data.length})
+                        resolve()
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
                 })
                 .catch(err => {
-                  reject(err)
+                    reject(err)
                 })
             })
+        },
+
+        updateNotifications: function({commit}, notificationsAmount) {
+            commit('updateNotificationsAmount', {notificationsAmount})
         },
     }
 })

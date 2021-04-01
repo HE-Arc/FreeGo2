@@ -3,7 +3,7 @@
     <v-toolbar-title>Free Go</v-toolbar-title>
     <v-spacer></v-spacer>
     <v-btn value="notifications" icon :to = "{ name:'notifications' }" v-if="accessToken!=null" exact>
-      <v-icon>mdi-bell</v-icon>
+      {{ notificationsAmount.notificationsAmount }}<v-icon>{{ `${icon}` }}</v-icon>
     </v-btn>
   </v-app-bar>
 </template>
@@ -13,7 +13,16 @@
 
   export default {
     name: 'Head',
-    computed: mapState(['accessToken']),
+
+    data() {
+      return {
+        icon: 'mdi-bell',
+      }
+    },
+
+    computed: {
+      ...mapState(['accessToken', 'notificationsAmount']),
+    },
   }
 </script>
 

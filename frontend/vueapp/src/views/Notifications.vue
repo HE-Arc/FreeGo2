@@ -17,6 +17,7 @@
 
 <script>
   import { getAPI } from '../axios-api'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'Notifications',
@@ -32,6 +33,10 @@
         fridgesManagerDescription: [],
         fridgesAmount: null,
       }
+    },
+
+    computed: {
+      ...mapState(['notificationsAmount']),
     },
 
     created() {
@@ -71,11 +76,11 @@
         this.notificationId.splice(id, 1)
         this.fridgesManagerDescription.splice(id, 1)
         this.fridgesAmount = this.fridgesName.length
-      }
+        this.$store.dispatch('updateNotifications', {notificationsAmount: this.fridgesAmount})
+      },
     }
   }
 </script>
 
 <style scoped>
-
 </style>
