@@ -2,7 +2,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
 from .models import Fridge, Picture, Favorite, Manager, Notification
 from django.contrib.auth.models import User
-from .serializers import FridgeSerializer, PictureSerializer, FavoriteSerializer, ManagerSerializer, MyTokenObtainPairSerializer, NotificationSerializer
+from .serializers import FridgeSerializer, PictureSerializer, FavoriteSerializer, ManagerSerializer, CustomTokenObtainPairSerializer, NotificationSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
@@ -59,7 +59,7 @@ class ManagerViewSet(viewsets.ModelViewSet):
         return HttpResponse(new_manager.id)
 
 class MyTokenObtainPairView(TokenObtainPairView):
-    serializer_class = MyTokenObtainPairSerializer
+    serializer_class = CustomTokenObtainPairSerializer
 
 class NotificationViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]

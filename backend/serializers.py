@@ -36,10 +36,10 @@ class ManagerSerializer(serializers.ModelSerializer):
         model = Manager
         fields = '__all__'
 
-class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         # Default result (access/refresh tokens)
-        data = super(MyTokenObtainPairSerializer, self).validate(attrs)
+        data = super(CustomTokenObtainPairSerializer, self).validate(attrs)
         # Custom data
         data.update({'userId': self.user.id})
         return data
