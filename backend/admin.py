@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django_json_widget.widgets import JSONEditorWidget
 from django.db import models
-from .models import Fridge, Picture, Favorite, Manager, Notification
+from .models import Fridge, Picture, Favorite, Manager, Notification, KmlFile
 
 class PictureInLine(admin.TabularInline):
     model = Picture
@@ -33,3 +33,4 @@ admin.site.register(Fridge, FridgeAdmin)
 admin.site.register(Favorite, FavoriteAdmin)
 admin.site.register(Manager, ManagerAdmin)
 admin.site.register(Notification, NotificationAdmin)
+admin.site.register(KmlFile)

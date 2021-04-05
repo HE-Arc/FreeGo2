@@ -41,3 +41,6 @@ class Manager(models.Model):
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE)
+
+class KmlFile(models.Model):
+    kml_file = models.FileField(upload_to='kml/%Y/%m/%d/')

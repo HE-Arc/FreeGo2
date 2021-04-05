@@ -1,20 +1,18 @@
 <template>
-
-    <GmapMap 
-      :center="coordinates" 
-      :zoom="12" 
-      style="width:100vw; height:100vh;"
-      ref="mapRef"
-    >
-    </GmapMap>
-
+  <div id="mapContainer"></div>
 </template>
 
 <script>
-  import { gmapApi } from 'vue2-google-maps'
+  import "leaflet/dist/leaflet.css";
+  import L from "leaflet";
+  import omnivore from "@mapbox/leaflet-omnivore"
+  import { getAPI } from '../axios-api'
 
   export default {
     name: 'Map',
+
+    components: {
+    },
 
     data() {
       return {
@@ -25,29 +23,42 @@
         },
       }
     },
-    
-    computed: {
-      google: gmapApi
-    },
 
     created() {
       this.$getLocation({})
       .then(coordinates =>{
         this.coordinates = coordinates
+        this.map.setView(this.coordinates, 10)
       })
       .catch(error => alert(error))
     },
 
     mounted() {
-      this.$refs.mapRef.$mapPromise.then((map) => {
-        new this.google.maps.KmlLayer({
-            map,
-            url: `https://www.google.com/maps/d/u/1/kml?forcekml=1&mid=1hc3fe23eojoXxayFh9kONc6v6ezx558u`
-        })
+      this.map = L.map('mapContainer', 'mapbox.streets')
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(this.map)
+
+      getAPI.get('/kmlfile/')
+      .then(response => {
+        omnivore.kml(response.data[0].kml_file).addTo(this.map)
       })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+
+    beforeDestroy() {
+      if (this.map) {
+        this.map.remove()
+      }
     },
   }
 </script>
 
 <style scoped>
+  #mapContainer {
+    width: 100%;
+    height: 75vh;
+  }
 </style>

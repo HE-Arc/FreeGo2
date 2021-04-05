@@ -1,7 +1,7 @@
 <template>
 
   <v-row>
-    <!-- <Map/> -->
+    <Map/>
     <v-btn icon @click="overlay = !overlay">
       <v-icon color="primary" large>mdi-information</v-icon>
     </v-btn>
@@ -25,7 +25,7 @@
         ></v-img>
         <v-card-title>Association Free Go</v-card-title>
         <v-card-text>
-          L’ Association Free Go, créée dans le canton de Neuchâtel, a comme objectif de se positionner dans l’action sociale de la Suisse romande en mettant en place des réfrigérateurs libre-service. Notre mission est d’aider les personnes dans le besoin tout en contribuant à diminuer le gaspillage alimentaire.
+          L’Association Free Go, créée dans le canton de Neuchâtel, a comme objectif de se positionner dans l’action sociale de la Suisse romande en mettant en place des réfrigérateurs libre-service. Notre mission est d’aider les personnes dans le besoin tout en contribuant à diminuer le gaspillage alimentaire.
           <br/>
           Notre action est possible grâce à l’aide d’une soixantaine de bénévoles, nos sponsors et nos partenaires locaux.
         </v-card-text>
@@ -41,14 +41,14 @@
 </template>
 
 <script>
-  /* import Map from '../components/Map' */
+  import Map from '../components/Map'
   import { mapState } from 'vuex'
 
   export default {
     name: 'Home',
 
     components: {
-      /* Map, */
+      Map,
     },
     
     data() {

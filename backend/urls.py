@@ -12,6 +12,7 @@ router.register(r'picture', views.PictureViewSet)
 router.register(r'favorite', views.FavoriteViewSet)
 router.register(r'manager', views.ManagerViewSet)
 router.register(r'notification', views.NotificationViewSet)
+router.register(r'kmlfile', views.KmlFileViewSet)
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -27,9 +28,9 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('api-token/', MyTokenObtainPairView.as_view()),
-    path('api-token-refresh/', TokenRefreshView.as_view()),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('', include(router.urls)),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('api-token/', MyTokenObtainPairView.as_view()),
+    path('api-token-refresh/', TokenRefreshView.as_view()),
 ]

@@ -1,8 +1,8 @@
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework import generics
-from .models import Fridge, Picture, Favorite, Manager, Notification
+from .models import Fridge, Picture, Favorite, Manager, Notification, KmlFile
 from django.contrib.auth.models import User
-from .serializers import FridgeSerializer, PictureSerializer, FavoriteSerializer, ManagerSerializer, CustomTokenObtainPairSerializer, NotificationSerializer
+from .serializers import FridgeSerializer, PictureSerializer, FavoriteSerializer, ManagerSerializer, CustomTokenObtainPairSerializer, NotificationSerializer, KmlFileSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
@@ -74,3 +74,14 @@ class NotificationViewSet(viewsets.ModelViewSet):
         if (fridge):
             self.queryset = Notification.objects.filter(fridge__id=fridge)
         return self.queryset
+
+class KmlFileViewSet(viewsets.ModelViewSet):
+    queryset = KmlFile.objects.all()
+    serializer_class = KmlFileSerializer
+
+    def upload(self ,request):
+        file_serializer = KmlFileSerializer(data=request.data)
+        if file_serializer.is_valid():
+            file_serializer.save()
+            return Response(file_serializer.data, status=status.HTTP_201_CREATED)
+        return Response(file_serializer.errors, status=status.HTTP_400_BAD_REQUEST)

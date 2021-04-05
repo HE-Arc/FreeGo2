@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from .models import Fridge, Picture, Favorite, Manager, Notification
+from .models import Fridge, Picture, Favorite, Manager, Notification, KmlFile
 from django.contrib.auth.models import User
 
 class PictureSerializer(serializers.ModelSerializer):
@@ -51,4 +51,11 @@ class NotificationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Notification
+        fields = '__all__'
+
+class KmlFileSerializer(serializers.ModelSerializer):
+    create_time = serializers.DateTimeField(read_only=True, format='%Y-%m-%d %H:%M:%S')
+
+    class Meta:
+        model = KmlFile
         fields = '__all__'
