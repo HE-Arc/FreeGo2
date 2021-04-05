@@ -5,7 +5,7 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import './registerServiceWorker'
 import VueGeolocation from 'vue-browser-geolocation'
-import 'leaflet/dist/leaflet.css';
+import 'leaflet/dist/leaflet.css'
 
 Vue.config.productionTip = false
 Vue.use(VueGeolocation)

@@ -6,6 +6,7 @@ from django.contrib.gis.geos import Point
 from django.utils import timezone
 from datetime import timedelta
 from django.core.files import File
+import kml2geojson
 
 class Command(BaseCommand):
     help = 'Pull data from My Maps\' kml file and update database accordingly'
@@ -22,10 +23,15 @@ class Command(BaseCommand):
         f.write(r.text)
         f.close()
 
+        kml2geojson.convert(fileName, "myMapsJson")
+
         with open(fileName, 'r') as f:
             root = parser.parse(f).getroot()
             kmlFile = KmlFile()
             kmlFile.kml_file.save(fileName, File(f))
+            
+        with open('myMapsJson/myMaps.geojson', 'r') as f:
+            kmlFile.geojson_file.save('myMapsJson/myMaps.geojson', File(f))
 
         kmlFridges = list()
 

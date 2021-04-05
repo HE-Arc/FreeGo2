@@ -44,3 +44,4 @@ class Notification(models.Model):
 
 class KmlFile(models.Model):
     kml_file = models.FileField(upload_to='kml/%Y/%m/%d/')
+    geojson_file = models.FileField(upload_to='kml/%Y/%m/%d/', default='')
