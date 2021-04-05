@@ -25,7 +25,9 @@
         ></v-img>
         <v-card-title>Association Free Go</v-card-title>
         <v-card-text>
-          Notre association a pour but de mettre en place des réfrigérateurs libre-service afin de diminuer le gaspillage alimentaire tout en permettant d'aider les personnes dans le besoin. Elle a été créée en 2019.
+          L’ Association Free Go, créée dans le canton de Neuchâtel, a comme objectif de se positionner dans l’action sociale de la Suisse romande en mettant en place des réfrigérateurs libre-service. Notre mission est d’aider les personnes dans le besoin tout en contribuant à diminuer le gaspillage alimentaire.
+          <br/>
+          Notre action est possible grâce à l’aide d’une soixantaine de bénévoles, nos sponsors et nos partenaires locaux.
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" @click="overlay = !overlay">
