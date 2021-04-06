@@ -31,7 +31,7 @@ class Command(BaseCommand):
             kmlFile.kml_file.save(fileName, File(f))
             
         with open('myMapsJson/myMaps.geojson', 'r') as f:
-            kmlFile.geojson_file.save('myMapsJson/myMaps.geojson', File(f))
+            kmlFile.geojson_file.save('myMaps.geojson', File(f))
 
         kmlFridges = list()
 
