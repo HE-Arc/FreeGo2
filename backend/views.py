@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
+from rest_framework.parsers import FileUploadParser
 
 class FridgeViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
@@ -76,8 +77,10 @@ class NotificationViewSet(viewsets.ModelViewSet):
         return self.queryset
 
 class KmlFileViewSet(viewsets.ModelViewSet):
+    renderer_classes = [JSONRenderer,]
     queryset = KmlFile.objects.all()
     serializer_class = KmlFileSerializer
+    parser_classes = (FileUploadParser,)
 
     def upload(self ,request):
         file_serializer = KmlFileSerializer(data=request.data)
