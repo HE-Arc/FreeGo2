@@ -7,6 +7,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.core.files import File
 import kml2geojson
+import re
 
 class Command(BaseCommand):
     help = 'Pull data from My Maps\' kml file and update database accordingly'
@@ -25,9 +26,9 @@ class Command(BaseCommand):
 
         kml2geojson.convert(fileName, "myMapsJson")
 
+        kmlFile = KmlFile()
         with open(fileName, 'r') as f:
             root = parser.parse(f).getroot()
-            kmlFile = KmlFile()
             kmlFile.kml_file.save(fileName, File(f))
             
         with open('myMapsJson/myMaps.geojson', 'r') as f:
@@ -35,11 +36,18 @@ class Command(BaseCommand):
 
         kmlFridges = list()
 
-        for pm in root.Document.Folder.Placemark:
-            coords = str(pm.Point.coordinates).strip("\n").strip().split(",")
-            name = str(pm.name).rstrip("\n")
+        freeGoFolders = list()
 
-            kmlFridges.append({'name': name, 'my_maps_description': pm.description, 'coordinates': Point(float(coords[0]), float(coords[1]))})
+        for folder in root.Document.Folder:
+            if re.search("^Nos Free Go.*", str(folder.name)):
+                freeGoFolders.append(folder)
+
+        for folder in freeGoFolders:
+            for pm in folder.Placemark:
+                coords = str(pm.Point.coordinates).strip("\n").strip().split(",")
+                name = str(pm.name).rstrip("\n")
+
+                kmlFridges.append({'name': name, 'my_maps_description': pm.description, 'coordinates': Point(float(coords[0]), float(coords[1]))})
 
         for kmlFridge in kmlFridges:
             qs_closest_fridges = Fridge.objects.filter(coordinates__distance_lte=(kmlFridge['coordinates'], 10)) # Get DB fridges that are less than 10 meters away from kml fridge

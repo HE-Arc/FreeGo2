@@ -95,9 +95,6 @@
               console.log(err)
             })
           }
-          else {
-            null
-          }
         }
       }
     },
