@@ -14,7 +14,8 @@
       />
       <l-geo-json
         :geojson="geojson"
-        :options="geojsonOptions"
+        :options="options"
+        :options-style="styleFunction"
       />
     </l-map>
   </div>
@@ -40,6 +41,7 @@
         zoom: 13,
         center: latLng(0, 0),
         geojson: null,
+        fillColor: "#d6ffff",
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
         currentZoom: 13,
@@ -47,13 +49,56 @@
         mapOptions: {
           zoomSnap: 0.5
         },
-        geojsonOptions: {
-          style: {
-            iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-            iconUrl: require('leaflet/dist/images/marker-icon.png'),
-            shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
-          },
-        },
+      }
+    },
+
+    computed: {
+      options() {
+        return {
+          onEachFeature: this.onEachFeatureFunction
+        }
+      },
+
+      styleFunction() {
+        const fillColor = this.fillColor 
+        return () => {
+          return {
+            weight: 2,
+            color: "#0094ad",
+            opacity: 1,
+            fillColor: fillColor,
+            fillOpacity: 0.3
+          }
+        }
+      },
+
+      onEachFeatureFunction() {
+        return (feature, layer) => {
+          if (feature.geometry.type == "Point") {
+
+            getAPI.get('/fridge/', {
+              params: {
+                name: feature.properties.name
+              }
+            })
+            .then(response => {
+              layer.bindPopup(
+                "<h3>" +
+                feature.properties.name +
+                "</h3><a href=\"http://localhost:8080/fridge/" +
+                response.data[0].id +
+                "\">Voir le Free Go</a>",
+                { permanent: false, sticky: true }
+              )
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          }
+          else {
+            null
+          }
+        }
       }
     },
 
