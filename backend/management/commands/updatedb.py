@@ -8,6 +8,7 @@ from datetime import timedelta
 from django.core.files import File
 import kml2geojson
 import re
+import io
 
 class Command(BaseCommand):
     help = 'Pull data from My Maps\' kml file and update database accordingly'
@@ -20,18 +21,18 @@ class Command(BaseCommand):
         fileName = "myMaps.kml"
         url = 'https://www.google.com/maps/d/u/1/kml?forcekml=1&mid=1hc3fe23eojoXxayFh9kONc6v6ezx558u'
         r = requests.get(url, allow_redirects=True)
-        f = open(fileName, "w")
+        f = io.open(fileName, mode="w", encoding="utf-8")
         f.write(r.text)
         f.close()
 
         kml2geojson.convert(fileName, "myMapsJson")
 
         kmlFile = KmlFile()
-        with open(fileName, 'r') as f:
+        with io.open(fileName, mode="r", encoding="utf-8") as f:
             root = parser.parse(f).getroot()
             kmlFile.kml_file.save(fileName, File(f))
             
-        with open('myMapsJson/myMaps.geojson', 'r') as f:
+        with io.open('myMapsJson/myMaps.geojson', mode="r", encoding="utf-8") as f:
             kmlFile.geojson_file.save('myMaps.geojson', File(f))
 
         kmlFridges = list()
