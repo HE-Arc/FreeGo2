@@ -2,7 +2,7 @@
   <v-app>
     <Head/>
     <v-main>
-      <v-container fluid>
+      <v-container>
         <router-view>
           <Home/>
         </router-view>

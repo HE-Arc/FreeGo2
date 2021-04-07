@@ -1,9 +1,9 @@
 <template>
 
   <v-row>
-    <Map style='z-index:1'/>
-    <v-btn icon @click="overlay = !overlay">
-      <v-icon color="primary" large>mdi-information</v-icon>
+    <Map style='z-index:1; height: 75vh; width: 100%'/>
+    <v-btn icon @click="overlay = !overlay" absolute left bottom style="z-index:2; bottom:20%;">
+      <v-icon color="info" large>mdi-information</v-icon>
     </v-btn>
     <v-slider
       v-model="distance"
@@ -63,5 +63,4 @@
 </script>
 
 <style scoped>
-
 </style>

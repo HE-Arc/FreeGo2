@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 75vh; width: 100%">
+  <div>
     <l-map
       :zoom="zoom"
       :center="center"
