@@ -1,7 +1,7 @@
 <template>
 
   <v-row>
-    <Map/>
+    <Map style='z-index:1'/>
     <v-btn icon @click="overlay = !overlay">
       <v-icon color="primary" large>mdi-information</v-icon>
     </v-btn>
@@ -17,7 +17,7 @@
       <template v-slot:label="">{{ distance }} km</template>
     </v-slider>
 
-    <v-overlay :absolute="true" :value="overlay" :opacity="0.8">
+    <v-overlay :absolute="false" :value="overlay" :opacity="0.8">
       <v-card max-width="300">
         <v-img
           height="250"
