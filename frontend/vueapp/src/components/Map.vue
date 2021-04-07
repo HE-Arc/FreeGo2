@@ -14,6 +14,7 @@
       />
       <l-geo-json
         :geojson="geojson"
+        :options="geojsonOptions"
       />
     </l-map>
   </div>
@@ -30,7 +31,7 @@
     components: {
       LMap,
       LTileLayer,
-      LGeoJson,
+      LGeoJson
     },
 
     data() {
@@ -39,16 +40,21 @@
         zoom: 13,
         center: latLng(0, 0),
         geojson: null,
-        fillColor: "#e4ce7f",
         url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        attribution:
-          '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        currentZoom: 11.5,
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        currentZoom: 13,
         currentCenter: latLng(0, 0),
         mapOptions: {
           zoomSnap: 0.5
         },
-        }
+        geojsonOptions: {
+          style: {
+            iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+            iconUrl: require('leaflet/dist/images/marker-icon.png'),
+            shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+          },
+        },
+      }
     },
 
     async created() {
@@ -72,7 +78,6 @@
       this.loading = true
       getAPI.get('/kmlfile/')
       .then(response => {
-        console.log(response.data[0].geojson_file)
         this.geojson = JSON.parse(response.data[0].geojson_file)
         this.loading = false
       })
