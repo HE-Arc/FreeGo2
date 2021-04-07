@@ -70,17 +70,6 @@
 
     mounted() {
       this.loading = true
-      getAPI.get('/media/kml/2021/04/06/myMaps.geojson')
-      .then(response => {
-        console.log(response.data)
-        this.geojson = response.data
-        this.loading = false
-      })
-      .catch(err => {
-        console.log(err)
-      })
-
-      /* this.loading = true
       getAPI.get('/kmlfile/')
       .then(response => {
         console.log(response.data[0].geojson_file)
@@ -89,7 +78,7 @@
       })
       .catch(err => {
         console.log(err)
-      }) */
+      })
     },
   }
 </script>

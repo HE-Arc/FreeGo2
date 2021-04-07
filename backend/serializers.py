@@ -2,6 +2,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Fridge, Picture, Favorite, Manager, Notification, KmlFile
 from django.contrib.auth.models import User
+from django.core.files import File
 
 class PictureSerializer(serializers.ModelSerializer):
     fridge = serializers.StringRelatedField()
@@ -55,7 +56,15 @@ class NotificationSerializer(serializers.ModelSerializer):
 
 class KmlFileSerializer(serializers.ModelSerializer):
     create_time = serializers.DateTimeField(read_only=True, format='%Y-%m-%d %H:%M:%S')
+    geojson_file = serializers.SerializerMethodField()
 
     class Meta:
         model = KmlFile
         fields = '__all__'
+
+    def get_geojson_file(self, obj):
+        f = open(obj.geojson_file.path, 'rb')
+        geojson = File(f)
+        data = geojson.read()
+        f.close()
+        return data
