@@ -1,8 +1,8 @@
 <template>
 
-  <v-row>
-    <Map style='z-index:1; height: 75vh; width: 100%'/>
-    <v-btn icon @click="overlay = !overlay" absolute left bottom style="z-index:2; bottom:20%;">
+  <v-row style='height: 2000px; max-height: calc(100vh - 118px);'>
+    <Map style='z-index:1; max-height: calc(100% - 16px); width: 100%'/>
+    <v-btn icon @click="overlay = !overlay" absolute right bottom style="z-index:2; bottom:20%;">
       <v-icon color="info" large>mdi-information</v-icon>
     </v-btn>
     <v-slider
@@ -13,6 +13,7 @@
       value="10"
       thumb-label
       inverse-label
+      style='height: 16px; z-index:2;'
     >
       <template v-slot:label="">{{ distance }} km</template>
     </v-slider>

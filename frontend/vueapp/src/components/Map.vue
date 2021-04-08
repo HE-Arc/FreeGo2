@@ -1,24 +1,22 @@
 <template>
-  <div>
-    <l-map
-      :zoom="zoom"
-      :center="center"
-      :options="mapOptions"
-      style="height: 100%"
-      @update:center="centerUpdate"
-      @update:zoom="zoomUpdate"
-    >
-      <l-tile-layer
-        :url="url"
-        :attribution="attribution"
-      />
-      <l-geo-json
-        :geojson="geojson"
-        :options="options"
-        :options-style="styleFunction"
-      />
-    </l-map>
-  </div>
+  <l-map
+    :zoom="zoom"
+    :center="center"
+    :options="mapOptions"
+    style="height: 100%"
+    @update:center="centerUpdate"
+    @update:zoom="zoomUpdate"
+  >
+    <l-tile-layer
+      :url="url"
+      :attribution="attribution"
+    />
+    <l-geo-json
+      :geojson="geojson"
+      :options="options"
+      :options-style="styleFunction"
+    />
+  </l-map>
 </template>
 
 <script>
