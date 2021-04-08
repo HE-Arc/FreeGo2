@@ -1,16 +1,19 @@
 <template>
 
-  <v-container fluid>
+  <v-container>
     <v-row>
-      <h3 center>Nos sponsors</h3>
+      <h3 style="padding:16px;">Nos sponsors</h3>
     </v-row>
     <v-row dense>
       <v-col
         v-for="card in cards"
         :key="card.title"
         :cols="card.flex"
+        sm=4
+        md=3
+        lg=2
       >
-        <v-card :href=card.href>
+        <v-card outlined :href=card.href max-height='250px' max-width='200px'>
           <v-img
             :src="card.src"
           >
