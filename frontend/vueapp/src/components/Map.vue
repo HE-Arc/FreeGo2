@@ -16,6 +16,7 @@
       :options="options"
       :options-style="styleFunction"
     />
+    <Popup v-bind:fridge="fridge" v-show=true ref='popup'/>
   </l-map>
 </template>
 
@@ -23,6 +24,7 @@
   import { latLng } from "leaflet"
   import { LMap, LTileLayer, LGeoJson } from "vue2-leaflet"
   import { getAPI } from '../axios-api'
+  import Popup from '../components/Popup'
 
   export default {
     name: 'Map',
@@ -30,7 +32,8 @@
     components: {
       LMap,
       LTileLayer,
-      LGeoJson
+      LGeoJson,
+      Popup
     },
 
     data() {
@@ -46,6 +49,10 @@
         currentCenter: latLng(0, 0),
         mapOptions: {
           zoomSnap: 0.5
+        },
+        fridge: {
+          name: 'name',
+          id: '1'
         },
       }
     },
@@ -71,26 +78,24 @@
       },
 
       onEachFeatureFunction() {
-        return (feature, layer) => {
+        return (feature, marker) => {
           if (feature.geometry.type == "Point") {
-
-            getAPI.get('/fridge/', {
-              params: {
-                name: feature.properties.name
-              }
-            })
-            .then(response => {
-              layer.bindPopup(
-                "<h3>" +
-                feature.properties.name +
-                "</h3><a href=\"http://localhost:8080/fridge/" +
-                response.data[0].id +
-                "\">Voir le Free Go</a>",
-                { permanent: false, sticky: true }
-              )
-            })
-            .catch(err => {
-              console.log(err)
+            marker.bindPopup(
+              () => this.$refs.popup.$el
+            )
+            marker.on('click', () => {
+              getAPI.get('/fridge/', {
+                params: {
+                  name: feature.properties.name
+                }
+              })
+              .then(response => {
+                this.fridge.name = response.data[0].name
+                this.fridge.id = response.data[0].id
+              })
+              .catch(err => {
+                console.log(err)
+              })
             })
           }
         }
@@ -109,6 +114,7 @@
       zoomUpdate(zoom) {
         this.currentZoom = zoom
       },
+
       centerUpdate(center) {
         this.currentCenter = center
       },
