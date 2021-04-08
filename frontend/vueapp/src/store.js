@@ -77,6 +77,21 @@ export default new Vuex.Store({
             })
         },
 
+        userLoginRefresh (context) {
+            return new Promise((resolve, reject) => {
+                getAPI.post('/api-token-refresh/', {
+                    refresh: this.state.refreshToken,
+                })
+                .then(response => {
+                    context.commit('updateStorage', { refresh: response.data.refresh})
+                    resolve()
+                })
+                .catch(err => {
+                    reject(err)
+                })
+            })
+        },
+
         updateNotifications: function({commit}, notificationsAmount) {
             commit('updateNotificationsAmount', {notificationsAmount})
         },

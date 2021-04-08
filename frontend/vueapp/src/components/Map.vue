@@ -16,7 +16,7 @@
       :options="options"
       :options-style="styleFunction"
     />
-    <Popup v-bind:fridge="fridge" v-show=true ref='popup'/>
+    <Popup v-bind:fridge="fridge" v-show=showPopup ref='popup'/>
   </l-map>
 </template>
 
@@ -50,6 +50,7 @@
         mapOptions: {
           zoomSnap: 0.5
         },
+        showPopup: false,
         fridge: {
           name: 'name',
           id: '1'
@@ -84,6 +85,7 @@
               () => this.$refs.popup.$el
             )
             marker.on('click', () => {
+              this.showPopup = true
               getAPI.get('/fridge/', {
                 params: {
                   name: feature.properties.name
