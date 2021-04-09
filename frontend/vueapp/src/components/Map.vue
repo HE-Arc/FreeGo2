@@ -84,11 +84,10 @@
             marker.bindPopup(
               () => this.$refs.popup.$el,
               {
-                maxWidth: "auto"
+                maxWidth: "auto",
               }
             )
             marker.on('click', () => {
-              this.showPopup = true
               getAPI.get('/fridge/', {
                 params: {
                   name: feature.properties.name
@@ -101,6 +100,7 @@
               .catch(err => {
                 console.log(err)
               })
+              this.showPopup = true
             })
           }
         }
@@ -109,7 +109,7 @@
 
     async created() {
       this.$getLocation({})
-      .then(coordinates =>{
+      .then(coordinates => {
         this.center = coordinates
       })
       .catch(error => alert(error))

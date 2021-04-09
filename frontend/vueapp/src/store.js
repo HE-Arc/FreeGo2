@@ -15,10 +15,13 @@ export default new Vuex.Store({
     },
 
     mutations: {
-        updateStorage (state, {access, refresh , userId: userId}) {
+        updateStorage (state, {access, refresh , userId}) {
             state.accessToken = access
             state.refreshToken = refresh
             state.userId = userId
+        },
+        updateAccess (state, {access}) {
+            state.accessToken = access
         },
         destroyToken (state) {
             state.accessToken = null
@@ -66,6 +69,12 @@ export default new Vuex.Store({
                     .then(response => {
                         context.commit('updateNotificationsAmount', {notificationsAmount: response.data.length})
                         resolve()
+                        setInterval(() => {
+                            context.dispatch('userLoginRefresh')
+                            .catch(err => {
+                                console.log(err)
+                            })
+                        }, 5 * 60 * 1000); // 5 minutes
                     })
                     .catch(err => {
                         reject(err)
@@ -74,6 +83,7 @@ export default new Vuex.Store({
                 .catch(err => {
                     reject(err)
                 })
+                
             })
         },
 
@@ -83,7 +93,7 @@ export default new Vuex.Store({
                     refresh: this.state.refreshToken,
                 })
                 .then(response => {
-                    context.commit('updateStorage', { refresh: response.data.refresh})
+                    context.commit('updateAccess', { access: response.data.access })
                     resolve()
                 })
                 .catch(err => {
