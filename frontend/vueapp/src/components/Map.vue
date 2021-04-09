@@ -82,7 +82,10 @@
         return (feature, marker) => {
           if (feature.geometry.type == "Point") {
             marker.bindPopup(
-              () => this.$refs.popup.$el
+              () => this.$refs.popup.$el,
+              {
+                maxWidth: "auto"
+              }
             )
             marker.on('click', () => {
               this.showPopup = true
