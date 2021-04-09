@@ -3,7 +3,7 @@
     
     <v-card-title>
       <v-btn icon @click="favoriteClick">
-        <v-icon color="primary" large>{{ isFavorite ? 'mdi-star' : 'mdi-star-outline' }}</v-icon>
+        <v-icon color="info" large>{{ isFavorite ? 'mdi-star' : 'mdi-star-outline' }}</v-icon>
       </v-btn>
       {{ fridgeData.name }}
     </v-card-title>
@@ -36,7 +36,6 @@
       fridgeData: false,
     }),
 
-    
     created () {
       // TODO: Perform concurrent requests instead ?
       getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))

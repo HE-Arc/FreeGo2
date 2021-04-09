@@ -1,11 +1,27 @@
 <template>
-  <div>
+  <div v-if="menusAmount">
     <v-row v-for="i in menusAmount" :key="i">
       <v-col>
-        <v-text-field :disabled="i > menusAmount" dense label="Menu" :counter="20" :error-messages="menusErrors" v-on:change="addMenu($event, i)" @input="$v.menus.$touch()" @blur="$v.menus.$touch()"></v-text-field>
+        <v-text-field 
+          v-model="menus[i-1]"
+          :disabled="i > menusAmount" 
+          dense 
+          label="Menu" 
+          :counter="20" 
+          :error-messages="menusErrors" 
+          v-on:change="addMenu($event, i)" 
+          @input="$v.menus.$touch()" 
+          @blur="$v.menus.$touch()"
+        ></v-text-field>
       </v-col>
       <v-col>
-        <v-text-field :disabled="!menus[i-1]" dense label="Allergènes" placeholder="lactose, noix" v-on:change="addAllergens($event, i)"></v-text-field>
+        <v-text-field 
+          v-model="allergens[i-1]"
+          :disabled="!menus[i-1]" 
+          dense label="Allergènes" 
+          placeholder="lactose, noix..." 
+          v-on:change="addAllergens($event, i)"
+        ></v-text-field>
       </v-col>
     </v-row>
   </div>
@@ -18,10 +34,13 @@
     name: 'AddMenu',
 
     data: () => ({
-      menusAmount: 1,
-      menus: [],
-      allergens: [],
     }),
+
+    props: {
+      menus: Array,
+      allergens: Array,
+      menusAmount: Number,
+    },
 
     computed: {
       menusErrors () {
@@ -39,12 +58,11 @@
     },
 
     methods: {
-      addMenu(menu, i) {
-        i -= 1;
+      addMenu(menus, i) {
+        i -= 1
         // If menu is not an empty string, add it to the menus array. Otherwise, put null instead
-        this.menus[i] = (menu ? menu : this.menus[i] = null)
+        this.menus[i] = (menus ? menus : this.menus[i] = null)
         this.checkMenusIntegrity()
-        console.log(this.menus)
       },
       checkMenusIntegrity() {
         // Delete null entries at the end of the menus array
@@ -55,8 +73,7 @@
         this.menusAmount = this.menus.length + 1
       },
       addAllergens(allergens, i) {
-        i -= 1
-        this.allergens[i] = allergens
+        this.allergens[i-1] = Array(allergens.split(','))
       },
     }
   }

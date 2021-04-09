@@ -4,23 +4,38 @@ import { getAPI } from './axios-api'
 
 Vue.use(Vuex)
 export default new Vuex.Store({
+    strict: true,
+
     state: {
         accessToken: null,
         refreshToken: null,
         userId: null,
         APIData: '',
+        notificationsAmount: null,
     },
 
     mutations: {
-        updateStorage (state, {access, refresh , userId: userId}) {
+        updateStorage (state, {access, refresh , userId}) {
             state.accessToken = access
             state.refreshToken = refresh
             state.userId = userId
         },
+        updateAccess (state, {access}) {
+            state.accessToken = access
+        },
         destroyToken (state) {
-          state.accessToken = null
-          state.refreshToken = null
-          state.userId = null
+            state.accessToken = null
+            state.refreshToken = null
+            state.userId = null
+        },
+        updateNotificationsAmount(state, {notificationsAmount}) {
+            // For some reason notificationsAmount is a Number on first call and an object later...
+            if(notificationsAmount.notificationsAmount) {
+                state.notificationsAmount = notificationsAmount.notificationsAmount
+            }
+            else {
+                state.notificationsAmount = notificationsAmount
+            }
         }
     },
 
@@ -36,6 +51,7 @@ export default new Vuex.Store({
                 context.commit('destroyToken')
             }
         },
+
         userLogin (context, userCredentials) {
             return new Promise((resolve, reject) => {
                 getAPI.post('/api-token/', {
@@ -45,11 +61,49 @@ export default new Vuex.Store({
                 .then(response => {
                     context.commit('updateStorage', { access: response.data.access, refresh: response.data.refresh, userId: response.data.userId })
                     resolve()
+                    getAPI.get('/notification/', {
+                        params: {
+                            user: this.state.userId,
+                        }
+                    })
+                    .then(response => {
+                        context.commit('updateNotificationsAmount', {notificationsAmount: response.data.length})
+                        resolve()
+                        setInterval(() => {
+                            context.dispatch('userLoginRefresh')
+                            .catch(err => {
+                                console.log(err)
+                            })
+                        }, 5 * 60 * 1000); // 5 minutes
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
                 })
                 .catch(err => {
-                  reject(err)
+                    reject(err)
+                })
+                
+            })
+        },
+
+        userLoginRefresh (context) {
+            return new Promise((resolve, reject) => {
+                getAPI.post('/api-token-refresh/', {
+                    refresh: this.state.refreshToken,
+                })
+                .then(response => {
+                    context.commit('updateAccess', { access: response.data.access })
+                    resolve()
+                })
+                .catch(err => {
+                    reject(err)
                 })
             })
+        },
+
+        updateNotifications: function({commit}, notificationsAmount) {
+            commit('updateNotificationsAmount', {notificationsAmount})
         },
     }
 })

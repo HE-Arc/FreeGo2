@@ -21,7 +21,6 @@ class Fridge(models.Model):
     def __str__(self):
         return self.name
 
-
 class Picture(models.Model):
     image = models.ImageField(upload_to=user_directory_path)
     created = models.DateTimeField(default=timezone.now)
@@ -31,3 +30,18 @@ class Picture(models.Model):
 class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE)
+
+class Manager(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.fridge.name
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE)
+
+class KmlFile(models.Model):
+    kml_file = models.FileField(upload_to='kml/%Y/%m/%d/')
+    geojson_file = models.FileField(upload_to='kml/%Y/%m/%d/', default='')
