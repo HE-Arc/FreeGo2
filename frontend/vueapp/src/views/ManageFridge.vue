@@ -135,9 +135,10 @@
           if(this.allergens[i].toString() !== "") {
             menusText += ', "children": ['
             let allergenIndex = 0
-            this.allergens[i].forEach(allergen => {
+            let allergenList = this.allergens[i].toString().split(",")
+            allergenList.forEach(allergen => {
               menusText += '{"name": "' + allergen + '"}'
-              if(allergenIndex < this.allergens[i].length-1){
+              if(allergenIndex < allergenList.length-1){
                 menusText += ','
               }
               allergenIndex++
@@ -151,6 +152,7 @@
           i++
         })
         menusText += ']}'
+        console.log(menusText)
         return JSON.parse(menusText)
       },
 
