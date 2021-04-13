@@ -104,9 +104,11 @@
         this.menusJson.forEach(menu => {
           this.menus.push(menu.name)
           let menuAllergens = []
-          menu.children.forEach(allergen => {
-            menuAllergens.push(allergen.name)
-          })
+          if(menu.children) {
+            menu.children.forEach(allergen => {
+              menuAllergens.push(allergen.name)
+            })
+          }
           this.allergens.push(menuAllergens)
         })
         this.menusAmount = this.menusJson.length + 1
@@ -129,23 +131,26 @@
 
         let i = 0
         this.menus.forEach(menu => {
-          menusText += '{"name": "' + menu + '", "children": ['
-          let allergenIndex = 0
-          this.allergens[i].forEach(allergen => {
-            menusText += '{"name": "' + allergen + '"}'
-            if(allergenIndex < this.allergens[i].length-1){
-              menusText += ','
-            }
-            allergenIndex++
-          })
-          menusText += ']}'
-          if(i < this.menusAmount-2){
+          menusText += '{"name": "' + menu + '"'
+          if(this.allergens[i].toString() !== "") {
+            menusText += ', "children": ['
+            let allergenIndex = 0
+            this.allergens[i].forEach(allergen => {
+              menusText += '{"name": "' + allergen + '"}'
+              if(allergenIndex < this.allergens[i].length-1){
+                menusText += ','
+              }
+              allergenIndex++
+            })
+            menusText += ']'
+          }
+          menusText += '}'
+          if(i < this.menusAmount-2) {
               menusText += ','
             }
           i++
         })
         menusText += ']}'
-
         return JSON.parse(menusText)
       },
 
@@ -162,8 +167,7 @@
                 image: this.imagesUrl,
               } */
           })
-          .then(response => {
-            console.log(response)
+          .then(() => {
 
             getAPI.get('/favorite/', {
               params:{
