@@ -103,7 +103,7 @@
             console.log(err)
             this.incorrectAuth = true
           })
-          .finally(() =>{
+          .finally(() => {
             this.submitStatus = 'OK'
           })
         }

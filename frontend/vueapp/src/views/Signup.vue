@@ -122,12 +122,24 @@
         } else {
           this.submitStatus = 'PENDING'
           //Signup logic here
-          getAPI.get('/register/')
-          .then(response => {
-            console.log(response.data)
+          getAPI.post('/register/', {
+            username: this.username,
+            password1: this.password1,
+            password2: this.password2,
+            email: this.email,
+          })
+          .then(() => {
+            this.$store.dispatch('userLogin', {
+              username: this.username,
+              password: this.password1
+            })
+            this.$router.push({ name: 'home' })
           })
           .catch(err => {
             console.log(err)
+          })
+          .finally(() => {
+            this.submitStatus = 'OK'
           })
         }
       }
