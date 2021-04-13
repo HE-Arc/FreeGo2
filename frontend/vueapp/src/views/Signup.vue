@@ -11,15 +11,27 @@
     ></v-text-field>
     
     <v-text-field
-      v-model="password"
+      v-model="password1"
       :error-messages="passwordErrors"
-      :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-      :type="show ? 'text' : 'password'"
+      :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+      :type="show1 ? 'text' : 'password'"
       label="Mot de passe"
       required
-      @click:append="show = !show"
-      @input="$v.password.$touch()"
-      @blur="$v.password.$touch()"
+      @click:append="show1 = !show1"
+      @input="$v.password1.$touch()"
+      @blur="$v.password1.$touch()"
+    ></v-text-field>
+    
+    <v-text-field
+      v-model="password2"
+      :error-messages="passwordErrors"
+      :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+      :type="show2 ? 'text' : 'password'"
+      label="Mot de passe"
+      required
+      @click:append="show2 = !show2"
+      @input="$v.password2.$touch()"
+      @blur="$v.password2.$touch()"
     ></v-text-field>
 
     <v-text-field
@@ -45,6 +57,7 @@
 
 <script>
   import { required, email } from 'vuelidate/lib/validators'
+  import { getAPI } from '../axios-api'
 
   export default {
     name: 'signup',
@@ -52,10 +65,12 @@
     data () {
       return {
         username: '',
-        password: '',
+        password1: '',
+        password2: '',
         email: '',
         submitStatus: null,
-        show: false,
+        show1: false,
+        show2: false,
       }
     },
 
@@ -63,7 +78,10 @@
       username: {
         required,
       },
-      password: {
+      password1: {
+        required,
+      },
+      password2: {
         required,
       },
       email: {
@@ -81,8 +99,10 @@
       },
       passwordErrors () {
         const errors = []
-        if (!this.$v.password.$dirty) return errors
-        !this.$v.password.required && errors.push('Veuillez entrer votre mot de passe')
+        if (!this.$v.password1.$dirty) return errors
+        !this.$v.password1.required && errors.push('Veuillez entrer votre mot de passe')
+        if (!this.$v.password2.$dirty) return errors
+        !this.$v.password2.required && errors.push('Veuillez confirmer votre mot de passe')
         return errors
       },
       emailErrors () {
@@ -101,8 +121,14 @@
           this.submitStatus = 'ERROR'
         } else {
           this.submitStatus = 'PENDING'
-
-          
+          //Signup logic here
+          getAPI.get('/register/')
+          .then(response => {
+            console.log(response.data)
+          })
+          .catch(err => {
+            console.log(err)
+          })
         }
       }
     },
