@@ -21,41 +21,39 @@
       @input="$v.password.$touch()"
       @blur="$v.password.$touch()"
     ></v-text-field>
+
+    <v-text-field
+      v-model="email"
+      :error-messages="emailErrors"
+      label="E-mail"
+      required
+      @input="$v.email.$touch()"
+      @blur="$v.email.$touch()"
+    ></v-text-field>
     <v-btn
       class="mr-4"
       :disabled="submitStatus === 'PENDING'"
-      @click="login"
-      color="primary"
-    >
-      Se connecter
-    </v-btn>
-    <v-btn
-      class="mr-4"
-      :disabled="submitStatus === 'PENDING'"
-      color="secondary"
+      color="Primary"
+      @click="signup"
       :to="{ name:'signup'}"
     >
       Créer un compte
     </v-btn>
-    <p v-if="incorrectAuth">Nom d'utilisateur ou mot de passe incorrect - veuillez réessayer</p>
   </form>
 
 </template>
 
 <script>
-  import { required } from 'vuelidate/lib/validators'
+  import { required, email } from 'vuelidate/lib/validators'
 
   export default {
-    name: 'login',
-
-    components: {
-    },
+    name: 'signup',
 
     data () {
       return {
         username: '',
         password: '',
-        incorrectAuth: false,
+        email: '',
         submitStatus: null,
         show: false,
       }
@@ -68,13 +66,17 @@
       password: {
         required,
       },
+      email: {
+        required,
+        email,
+      },
     },
 
     computed: { 
       usernameErrors () {
         const errors = []
         if (!this.$v.username.$dirty) return errors
-        !this.$v.username.required && errors.push('Veuillez entrer votre nom d\'utilisateur')
+        !this.$v.username.required && errors.push('Veuillez choisir votre nom d\'utilisateur')
         return errors
       },
       passwordErrors () {
@@ -83,29 +85,24 @@
         !this.$v.password.required && errors.push('Veuillez entrer votre mot de passe')
         return errors
       },
+      emailErrors () {
+        const errors = []
+        if (!this.$v.email.$dirty) return errors
+        !this.$v.email.email && errors.push('Veuillez entrer une adresse e-mail valide')
+        !this.$v.email.required && errors.push('Veuillez entrer votre adresse e-mail')
+        return errors
+      },
     },
 
     methods: {
-      login() {
+      signup(){
         this.$v.$touch()
         if (this.$v.$invalid) {
           this.submitStatus = 'ERROR'
         } else {
           this.submitStatus = 'PENDING'
-          this.$store.dispatch('userLogin', {
-            username: this.username,
-            password: this.password
-          })
-          .then(() => {
-            this.$router.push({ name: 'home' })
-          })
-          .catch(err => {
-            console.log(err)
-            this.incorrectAuth = true
-          })
-          .finally(() =>{
-            this.submitStatus = 'OK'
-          })
+
+          
         }
       }
     },
