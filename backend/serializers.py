@@ -22,6 +22,13 @@ class FridgeSerializer(serializers.ModelSerializer):
         model = Fridge
         fields = '__all__'
 
+    """ def update(self, instance, validated_data):
+        instance.manager_description = validated_data.get('manager_description', instance.manager_description)
+        instance.menu_list = validated_data.get('menu_list', instance.menu_list)
+        for picture in instance.pictures.all():
+            picture = validated_data.get('pictures', picture)
+        return instance """
+
 class FavoriteSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     fridge = serializers.StringRelatedField()

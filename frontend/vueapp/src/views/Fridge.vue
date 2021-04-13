@@ -16,7 +16,7 @@
       </v-carousel-item>
     </v-carousel>
 
-    <v-treeview :items="fridgeData.menu_list.items"></v-treeview>
+    <v-treeview dense :items="fridgeData.menu_list.items"></v-treeview>
   </v-card>
 </template>
 

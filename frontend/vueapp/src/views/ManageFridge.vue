@@ -152,11 +152,11 @@
           i++
         })
         menusText += ']}'
-        console.log(menusText)
         return JSON.parse(menusText)
       },
 
       submit() {
+
         this.$v.$touch()
         if (this.$v.$invalid) {
           this.submitStatus = 'ERROR'
@@ -164,10 +164,6 @@
           getAPI.patch('/fridge/'.concat(this.fridgeId).concat('/'), {
               manager_description: this.description,
               menu_list: this.createMenusJSON(),
-              /* pictures: {
-                fridge: this.fridgeId,
-                image: this.imagesUrl,
-              } */
           })
           .then(() => {
 
@@ -199,10 +195,14 @@
           })
 
           // TODO: Submit pictures
-          /* for(let i = 0; i < this.imagesUrl.length; i++){
-            getAPI.post('/media/fridges/', {
-              fridge: this.fridgeId,
-              image: this.imagesUrl[i],
+          for(let i = 0; i < this.imagesUrl.length; i++){
+            const formData = new FormData()
+            console.log(this.imagesUrl[i])
+            formData.append("pictures.image", this.imagesUrl[i])
+            getAPI.patch('/fridge/'.concat(this.fridgeId).concat('/'), formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
             })
             .then(response => {
               console.log(response)
@@ -210,7 +210,7 @@
             .catch(err => {
               console.log(err)
             })
-          } */
+          }
 
           this.submitStatus = 'PENDING'
           setTimeout(() => {
