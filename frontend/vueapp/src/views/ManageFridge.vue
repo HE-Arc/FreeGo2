@@ -19,7 +19,7 @@
         <v-img 
           v-for="i in imagesAmount"
           :key="i"
-          :src="imagesUrl[i-1]" 
+          :src="images[i-1]" 
           style="border: 1px dashed #ccc; height: 120px; width: 90px;" 
         />
 
@@ -69,8 +69,8 @@
       return {
         fridge: '',
         fridgeId: null,
-        imagesAmount: null,
-        imagesUrl: [],
+        imagesAmount: 0,
+        images: [],
         menusJson: null,
         menusAmount: null,
         menus: [],
@@ -97,9 +97,9 @@
         this.menusJson = response.data.menu_list.items
         this.description = response.data.manager_description
         response.data.pictures.forEach(picture => {
-          this.imagesUrl.push(picture.image)
+          this.images.push(picture.image)
         })
-        this.imagesAmount = this.imagesUrl.length
+        this.imagesAmount = this.images.length
 
         this.menusJson.forEach(menu => {
           this.menus.push(menu.name)
@@ -156,7 +156,6 @@
       },
 
       submit() {
-
         this.$v.$touch()
         if (this.$v.$invalid) {
           this.submitStatus = 'ERROR'
@@ -194,19 +193,14 @@
             console.log(err)
           })
 
-          // TODO: Submit pictures
-          for(let i = 0; i < this.imagesUrl.length; i++){
+          for(let i = 0; i < this.images.length; i++){
             const formData = new FormData()
-            console.log(this.imagesUrl[i])
-            formData.append("image", this.imagesUrl[i])
+            formData.append("image", this.images[i])
             formData.append("fridge", this.fridgeId)
             getAPI.post('/picture/', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
-            })
-            .then(response => {
-              console.log(response)
             })
             .catch(err => {
               console.log(err)
@@ -224,7 +218,7 @@
         files.forEach(file => {
           const reader = new FileReader()
           reader.onload = (e) => {
-            this.imagesUrl.push(e.target.result)
+            this.images.push(e.target.result)
             this.imagesAmount++
           }
           reader.readAsDataURL(file)

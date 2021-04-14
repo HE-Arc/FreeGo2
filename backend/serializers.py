@@ -5,43 +5,11 @@ from .models import Fridge, Picture, Favorite, Manager, Notification, KmlFile
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.files import File
-
-class Base64ImageField(serializers.ImageField):
-
-    def to_internal_value(self, data):
-        from django.core.files.base import ContentFile
-        import base64
-        import six
-        import uuid
-
-        if isinstance(data, six.string_types):
-            if 'data:' in data and ';base64,' in data:
-                header, data = data.split(';base64,')
-
-            try:
-                decoded_file = base64.b64decode(data)
-            except TypeError:
-                self.fail('invalid_image')
-
-            file_name = str(uuid.uuid4())[:12] # 12 characters are more than enough.
-            file_extension = self.get_file_extension(file_name, decoded_file)
-            complete_file_name = "%s.%s" % (file_name, file_extension, )
-            data = ContentFile(decoded_file, name=complete_file_name)
-
-        return super(Base64ImageField, self).to_internal_value(data)
-
-    def get_file_extension(self, file_name, decoded_file):
-        import imghdr
-
-        extension = imghdr.what(file_name, decoded_file)
-        extension = "jpg" if extension == "jpeg" else extension
-
-        return extension
+from drf_extra_fields.fields import Base64ImageField
 
 class PictureSerializer(serializers.ModelSerializer):
     fridge = serializers.PrimaryKeyRelatedField(queryset=Fridge.objects.all())
     image = Base64ImageField(max_length=None, use_url=True)
-    image_url = serializers.SerializerMethodField
 
     class Meta:
         model = Picture
@@ -54,13 +22,6 @@ class FridgeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fridge
         fields = '__all__'
-
-    """ def update(self, instance, validated_data):
-        instance.manager_description = validated_data.get('manager_description', instance.manager_description)
-        instance.menu_list = validated_data.get('menu_list', instance.menu_list)
-        for picture in instance.pictures.all():
-            picture = validated_data.get('pictures', picture)
-        return instance """
 
 class FavoriteSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
