@@ -198,8 +198,9 @@
           for(let i = 0; i < this.imagesUrl.length; i++){
             const formData = new FormData()
             console.log(this.imagesUrl[i])
-            formData.append("pictures.image", this.imagesUrl[i])
-            getAPI.patch('/fridge/'.concat(this.fridgeId).concat('/'), formData, {
+            formData.append("image", this.imagesUrl[i])
+            formData.append("fridge", this.fridgeId)
+            getAPI.post('/picture/', formData, {
               headers: {
                 'Content-Type': 'multipart/form-data'
               }
