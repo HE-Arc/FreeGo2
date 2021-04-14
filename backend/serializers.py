@@ -9,7 +9,7 @@ from drf_extra_fields.fields import Base64ImageField
 
 class PictureSerializer(serializers.ModelSerializer):
     fridge = serializers.PrimaryKeyRelatedField(queryset=Fridge.objects.all())
-    image = Base64ImageField(max_length=None, use_url=True)
+    image = Base64ImageField(max_length=None)
 
     class Meta:
         model = Picture

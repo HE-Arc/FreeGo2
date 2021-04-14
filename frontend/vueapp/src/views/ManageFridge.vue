@@ -16,9 +16,20 @@
           @change="previewImages"
         ></v-file-input>
 
+        <v-card 
+          v-for="i in oldImagesAmount"
+          :key="i"
+          @click="addToDelete(i-1)"
+        >
+          <v-img 
+            :src="oldImages[i-1]"
+            style="border: 1px dashed #ccc; height: 120px; width: 90px;" 
+          />
+        </v-card>
+        
         <v-img 
           v-for="i in imagesAmount"
-          :key="i"
+          :key="'o'+i"
           :src="images[i-1]" 
           style="border: 1px dashed #ccc; height: 120px; width: 90px;" 
         />
@@ -69,6 +80,10 @@
       return {
         fridge: '',
         fridgeId: null,
+        oldImagesAmount: 0,
+        oldImages: [],
+        oldImagesId: [],
+        oldImagesIdToDelete: [],
         imagesAmount: 0,
         images: [],
         menusJson: null,
@@ -97,9 +112,10 @@
         this.menusJson = response.data.menu_list.items
         this.description = response.data.manager_description
         response.data.pictures.forEach(picture => {
-          this.images.push(picture.image)
+          this.oldImages.push(picture.image)
+          this.oldImagesId.push(picture.id)
         })
-        this.imagesAmount = this.images.length
+        this.oldImagesAmount = this.oldImages.length
 
         this.menusJson.forEach(menu => {
           this.menus.push(menu.name)
@@ -193,7 +209,7 @@
             console.log(err)
           })
 
-          for(let i = 0; i < this.images.length; i++){
+          for(let i = 0; i < this.imagesAmount; i++){
             const formData = new FormData()
             formData.append("image", this.images[i])
             formData.append("fridge", this.fridgeId)
@@ -207,10 +223,31 @@
             })
           }
 
+          for(let i = 0; i < this.oldImagesIdToDelete.length; i++){
+            getAPI.delete('/picture/'.concat(this.oldImagesIdToDelete[i]).concat('/'))
+            .catch(err => {
+              console.log(err)
+            })
+          }
+
           this.submitStatus = 'PENDING'
           setTimeout(() => {
             this.submitStatus = 'OK'
           }, 500)
+        }
+      },
+
+      addToDelete(index) {
+        if(!this.oldImagesIdToDelete.includes(this.oldImagesId[index])) {
+          this.oldImagesIdToDelete.push(this.oldImagesId[index])
+        }
+        else {
+          for(let i = 0; i < this.oldImagesIdToDelete.length; i++){                     
+            if (this.oldImagesIdToDelete[i] === this.oldImagesId[index]) { 
+              this.oldImagesIdToDelete.splice(i, 1); 
+              i--; 
+            }
+          }
         }
       },
 
