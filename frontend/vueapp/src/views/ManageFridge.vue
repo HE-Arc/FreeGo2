@@ -221,15 +221,14 @@
       },
 
       createImage(files) {
-        const reader = new FileReader();
-        
         files.forEach(file => {
+          const reader = new FileReader()
           reader.onload = (e) => {
             this.imagesUrl.push(e.target.result)
             this.imagesAmount++
           }
           reader.readAsDataURL(file)
-        });
+        })
       },
       
       previewImages(files) {
