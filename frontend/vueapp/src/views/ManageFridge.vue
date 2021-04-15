@@ -5,16 +5,20 @@
     <v-card-text>
       <form>
 
-        <v-file-input
-          accept="image/png, image/jpeg, image/bmp"
-          prepend-icon="mdi-camera"
-          label="Photos"
-          small-chips
-          multiple
-          clearable
-          @change="previewImages"
-        ></v-file-input>
-
+        <v-row>
+          <v-col cols="12" align="center" justify="space-around">
+            <v-file-input
+              accept="image/png, image/jpeg, image/bmp"
+              prepend-icon='mdi-camera'
+              label="Photos"
+              small-chips
+              multiple
+              clearable
+              @change="previewImages"
+            ></v-file-input>
+          </v-col>
+        </v-row>
+        
         <v-row>
           <v-col
             cols="3"
@@ -26,7 +30,7 @@
             >
               <v-img
                 :src="oldImages[i-1]"
-                :gradient="oldImagesFlag[i-1] ? '' : 'to top, rgba(0,0,0,.7), rgba(0,0,0,.7)'"
+                :gradient="oldImagesFlag[i-1] ? '' : 'to top, rgba(0,0,0,.8), rgba(0,0,0,.8)'"
               />
             </v-card>
           </v-col>
@@ -41,7 +45,7 @@
             >
               <v-img
                 :src="images[i-1]" 
-                :gradient="imagesFlag[i-1] ? '' : 'to top, rgba(0,0,0,.7), rgba(0,0,0,.7)'"
+                :gradient="imagesFlag[i-1] ? '' : 'to top, rgba(0,0,0,.8), rgba(0,0,0,.8)'"
               />
             </v-card>
           </v-col>
