@@ -1,6 +1,6 @@
 <template>
   <div v-if="APIData">
-    <FridgeCard v-for="fridge in APIData" v-bind:key="fridge.id" v-bind:fridge="fridge"></FridgeCard>
+    <FridgeCard v-for="favorite in APIData" v-bind:key="favorite.fridge" v-bind:fridge="favorite.fridge"></FridgeCard>
   </div>
 </template>
 
@@ -20,7 +20,11 @@
     }),
 
     created () {
-      getAPI.get('/fridge/', { headers: { Authorization: `Bearer ${this.$store.state.accessToken}` } })
+      getAPI.get('/favorite/', {
+        params: {
+          user: this.$store.state.userId
+        }
+      })
       .then(response => {
         this.APIData = response.data
       })

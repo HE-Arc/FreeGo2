@@ -20,7 +20,7 @@ class PictureAdmin(admin.ModelAdmin):
     list_display = ('id', 'slug')
 
 class FavoriteAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'fridge')
+    list_display = ('id', 'user', 'fridge', 'fridge_id')
 
 class ManagerAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'fridge')
