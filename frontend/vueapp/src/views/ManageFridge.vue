@@ -7,7 +7,6 @@
 
         <v-file-input
           accept="image/png, image/jpeg, image/bmp"
-          placeholder="Photos du Free Go"
           prepend-icon="mdi-camera"
           label="Photos"
           small-chips
@@ -22,12 +21,12 @@
             v-for="i in oldImagesAmount"
             :key="i"
           >
-            <v-card 
+            <v-card
               @click="addToDelete(i-1)"
             >
-              <v-img 
+              <v-img
                 :src="oldImages[i-1]"
-                style="border: 1px dashed #ccc; height: 120px; width: 90px;" 
+                :gradient="oldImagesFlag[i-1] ? '' : 'to top, rgba(0,0,0,.7), rgba(0,0,0,.7)'"
               />
             </v-card>
           </v-col>
@@ -37,12 +36,12 @@
             v-for="i in imagesAmount"
             :key="'o'+i"
           >
-            <v-card 
+            <v-card
               @click="removeFromPost(i-1)"
             >
-              <v-img 
+              <v-img
                 :src="images[i-1]" 
-                style="border: 1px dashed #ccc; height: 120px; width: 90px;" 
+                :gradient="imagesFlag[i-1] ? '' : 'to top, rgba(0,0,0,.7), rgba(0,0,0,.7)'"
               />
             </v-card>
           </v-col>
@@ -79,6 +78,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import { getAPI } from '../axios-api'
   import { maxLength } from 'vuelidate/lib/validators'
   import AddMenu from '../components/AddMenu'
@@ -98,9 +98,11 @@
         oldImages: [],
         oldImagesId: [],
         oldImagesIdToDelete: [],
+        oldImagesFlag: [],
         imagesAmount: 0,
         images: [],
         imagesToPost: [],
+        imagesFlag: [],
         menusJson: null,
         menusAmount: null,
         menus: [],
@@ -129,6 +131,7 @@
         response.data.pictures.forEach(picture => {
           this.oldImages.push(picture.image)
           this.oldImagesId.push(picture.id)
+          this.oldImagesFlag.push(true)
         })
         this.oldImagesAmount = this.oldImages.length
 
@@ -255,6 +258,7 @@
       addToDelete(index) {
         if(!this.oldImagesIdToDelete.includes(this.oldImagesId[index])) {
           this.oldImagesIdToDelete.push(this.oldImagesId[index])
+          Vue.set(this.oldImagesFlag, index, false)
         }
         else {
           for(let i = 0; i < this.oldImagesIdToDelete.length; i++){
@@ -263,24 +267,24 @@
               i--
             }
           }
+          Vue.set(this.oldImagesFlag, index, true)
         }
       },
 
       removeFromPost(index) {
         if(this.imagesToPost.includes(this.images[index])) {
-          console.log("remove")
           for(let i = 0; i < this.imagesToPost.length; i++){
             if (this.imagesToPost[i] === this.images[index]) {
               this.imagesToPost.splice(i, 1)
               i--
             }
           }
+          Vue.set(this.imagesFlag, index, false)
         }
         else {
-          console.log("add")
           this.imagesToPost.push(this.images[index])
+          Vue.set(this.imagesFlag, index, true)
         }
-        console.log(this.imagesToPost)
       },
 
       createImage(files) {
@@ -289,6 +293,7 @@
           reader.onload = (e) => {
             this.images.push(e.target.result)
             this.imagesToPost.push(e.target.result)
+            this.imagesFlag.push(true)
             this.imagesAmount++
           }
           reader.readAsDataURL(file)

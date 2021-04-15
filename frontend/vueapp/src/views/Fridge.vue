@@ -12,7 +12,7 @@
 
     <v-carousel>
       <v-carousel-item v-for="picture in fridgeData.pictures" :key=picture.image>
-        <v-img v-bind:src="picture.image" :aspect-ration="3/4"></v-img>
+        <v-img v-bind:src="picture.image" :aspect-ratio="3/4"></v-img>
       </v-carousel-item>
     </v-carousel>
 
