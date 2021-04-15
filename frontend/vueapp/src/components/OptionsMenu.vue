@@ -67,7 +67,10 @@
       getAPI.get('/manager/', {
         params: {
           user: this.$store.state.userId
-        }
+        },
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+        },
       })
       .then(response => {
         response.data.forEach(fridge => this.fridges.push(fridge))

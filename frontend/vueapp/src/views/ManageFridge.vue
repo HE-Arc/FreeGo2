@@ -191,7 +191,6 @@
           i++
         })
         menusText += ']}'
-        console.log(menusText)
         return JSON.parse(menusText)
       },
 
@@ -201,15 +200,21 @@
           this.submitStatus = 'ERROR'
         } else {
           getAPI.patch('/fridge/'.concat(this.fridgeId).concat('/'), {
-              manager_description: this.description,
-              menu_list: this.createMenusJSON(),
+            manager_description: this.description,
+            menu_list: this.createMenusJSON(),
+            headers: {
+              'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+            },
           })
           .then(() => {
 
             getAPI.get('/favorite/', {
               params:{
                 fridge: this.fridgeId,
-              }
+              },
+              headers: {
+                'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+              },
             })
             .then(response => {
 
@@ -217,6 +222,9 @@
                 getAPI.post('/notification/', {
                   fridge: this.fridgeId,
                   user: response.data[i].user,
+                  headers: {
+                    'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+                  },
                 })
                 .catch(err => {
                   console.log(err)

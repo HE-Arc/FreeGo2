@@ -12,7 +12,6 @@ from rest_framework.parsers import FileUploadParser
 class FridgeViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Fridge.objects.all()
-    #permission_classes = (IsAuthenticated, )
     serializer_class = FridgeSerializer
 
     def get_queryset(self):
@@ -29,6 +28,7 @@ class PictureViewSet(viewsets.ModelViewSet):
 class FavoriteViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Favorite.objects.all()
+    permission_classes = (IsAuthenticated, )
     serializer_class = FavoriteSerializer
 
     def get_queryset(self):
@@ -51,6 +51,7 @@ class ManagerViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Manager.objects.all()
     serializer_class = ManagerSerializer
+    permission_classes = (IsAuthenticated, )
 
     def get_queryset(self):
         user = self.request.query_params.get('user')
@@ -72,6 +73,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
+    #permission_classes = (IsAuthenticated, )
 
     def get_queryset(self):
         user = self.request.query_params.get('user')

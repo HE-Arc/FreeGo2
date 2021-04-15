@@ -23,7 +23,10 @@
       getAPI.get('/favorite/', {
         params: {
           user: this.$store.state.userId
-        }
+        },
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+        },
       })
       .then(response => {
         this.APIData = response.data

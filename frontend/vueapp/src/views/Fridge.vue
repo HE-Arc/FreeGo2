@@ -46,7 +46,10 @@
           params: {
             user: this.$store.state.userId,
             fridge: this.fridgeData.id
-          }
+          },
+          headers: {
+            'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+          },
         })
         .then(response => {
           if (response.data[0]){
@@ -67,7 +70,11 @@
     methods: {
       favoriteClick() {
         if (this.favoriteId) {
-          getAPI.delete('/favorite/'.concat(this.favoriteId).concat('/'))
+          getAPI.delete('/favorite/'.concat(this.favoriteId).concat('/'), {
+            headers: {
+              'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+            },
+          })
           .then(response => {
             console.log(response)
             this.isFavorite = false
@@ -79,8 +86,13 @@
         }
         else {
           getAPI.post('/favorite/', {
-            user: this.$store.state.userId,
-            fridge: this.fridgeData.id
+            params: {
+              user: this.$store.state.userId,
+              fridge: this.fridgeData.id
+            },
+            headers: {
+              'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+            },
           })
           .then(response => {
             this.isFavorite = true
