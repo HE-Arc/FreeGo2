@@ -165,6 +165,7 @@
     methods: {
       createMenusJSON () {
         // Create a json object to use for our menus and allergens
+        this.menusAmount = this.menus.length + 1
         let menusText = '{"items": ['
 
         let i = 0
@@ -190,6 +191,7 @@
           i++
         })
         menusText += ']}'
+        console.log(menusText)
         return JSON.parse(menusText)
       },
 
