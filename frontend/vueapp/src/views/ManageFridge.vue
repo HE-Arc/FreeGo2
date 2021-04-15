@@ -224,7 +224,7 @@
             console.log(err)
           })
 
-          for(let i = 0; i < this.imagesAmount; i++){
+          for(let i = 0; i < this.imagesToPost.length; i++){
             const formData = new FormData()
             formData.append("image", this.imagesToPost[i])
             formData.append("fridge", this.fridgeId)
