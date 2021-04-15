@@ -16,23 +16,37 @@
           @change="previewImages"
         ></v-file-input>
 
-        <v-card 
-          v-for="i in oldImagesAmount"
-          :key="i"
-          @click="addToDelete(i-1)"
-        >
-          <v-img 
-            :src="oldImages[i-1]"
-            style="border: 1px dashed #ccc; height: 120px; width: 90px;" 
-          />
-        </v-card>
-        
-        <v-img 
-          v-for="i in imagesAmount"
-          :key="'o'+i"
-          :src="images[i-1]" 
-          style="border: 1px dashed #ccc; height: 120px; width: 90px;" 
-        />
+        <v-row>
+          <v-col
+            cols="3"
+            v-for="i in oldImagesAmount"
+            :key="i"
+          >
+            <v-card 
+              @click="addToDelete(i-1)"
+            >
+              <v-img 
+                :src="oldImages[i-1]"
+                style="border: 1px dashed #ccc; height: 120px; width: 90px;" 
+              />
+            </v-card>
+          </v-col>
+
+          <v-col
+            cols="3"
+            v-for="i in imagesAmount"
+            :key="'o'+i"
+          >
+            <v-card 
+              @click="removeFromPost(i-1)"
+            >
+              <v-img 
+                :src="images[i-1]" 
+                style="border: 1px dashed #ccc; height: 120px; width: 90px;" 
+              />
+            </v-card>
+          </v-col>
+        </v-row>
 
         <AddMenu v-if="menus" :menus="menus" :allergens="allergens" :menusAmount="menusAmount"></AddMenu>
           
@@ -86,6 +100,7 @@
         oldImagesIdToDelete: [],
         imagesAmount: 0,
         images: [],
+        imagesToPost: [],
         menusJson: null,
         menusAmount: null,
         menus: [],
@@ -211,7 +226,7 @@
 
           for(let i = 0; i < this.imagesAmount; i++){
             const formData = new FormData()
-            formData.append("image", this.images[i])
+            formData.append("image", this.imagesToPost[i])
             formData.append("fridge", this.fridgeId)
             getAPI.post('/picture/', formData, {
               headers: {
@@ -242,13 +257,30 @@
           this.oldImagesIdToDelete.push(this.oldImagesId[index])
         }
         else {
-          for(let i = 0; i < this.oldImagesIdToDelete.length; i++){                     
-            if (this.oldImagesIdToDelete[i] === this.oldImagesId[index]) { 
-              this.oldImagesIdToDelete.splice(i, 1); 
-              i--; 
+          for(let i = 0; i < this.oldImagesIdToDelete.length; i++){
+            if (this.oldImagesIdToDelete[i] === this.oldImagesId[index]) {
+              this.oldImagesIdToDelete.splice(i, 1)
+              i--
             }
           }
         }
+      },
+
+      removeFromPost(index) {
+        if(this.imagesToPost.includes(this.images[index])) {
+          console.log("remove")
+          for(let i = 0; i < this.imagesToPost.length; i++){
+            if (this.imagesToPost[i] === this.images[index]) {
+              this.imagesToPost.splice(i, 1)
+              i--
+            }
+          }
+        }
+        else {
+          console.log("add")
+          this.imagesToPost.push(this.images[index])
+        }
+        console.log(this.imagesToPost)
       },
 
       createImage(files) {
@@ -256,6 +288,7 @@
           const reader = new FileReader()
           reader.onload = (e) => {
             this.images.push(e.target.result)
+            this.imagesToPost.push(e.target.result)
             this.imagesAmount++
           }
           reader.readAsDataURL(file)
