@@ -8,12 +8,13 @@ from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 from rest_framework.parsers import FileUploadParser
+from .permissions import IsManagerOf
 
 class FridgeViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Fridge.objects.all()
     serializer_class = FridgeSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAuthenticatedOrReadOnly, IsManagerOf)
 
     def get_queryset(self):
         name = self.request.query_params.get('name')

@@ -200,16 +200,16 @@
           this.submitStatus = 'ERROR'
         } else {
           getAPI.patch('/fridge/'.concat(this.fridgeId).concat('/'), {
-            manager_description: this.description,
-            menu_list: this.createMenusJSON()
-          },
-          {
-            headers: {
-              'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+              manager_description: this.description,
+              menu_list: this.createMenusJSON()
             },
-          })
+            {
+              headers: {
+                'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+              },
+            }
+          )
           .then(() => {
-
             getAPI.get('/favorite/', {
               params:{
                 fridge: this.fridgeId,
