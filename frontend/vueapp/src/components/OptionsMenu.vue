@@ -64,21 +64,23 @@
     },
 
     created() {
-      getAPI.get('/manager/', {
-        params: {
-          user: this.$store.state.userId
-        },
-        headers: {
-          'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
-        },
-      })
-      .then(response => {
-        response.data.forEach(fridge => this.fridges.push(fridge))
-        this.select = this.fridges[0]
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      if(this.$store.state.accessToken){
+        getAPI.get('/manager/', {
+          params: {
+            user: this.$store.state.userId
+          },
+          headers: {
+            'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+          },
+        })
+        .then(response => {
+          response.data.forEach(fridge => this.fridges.push(fridge))
+          this.select = this.fridges[0]
+        })
+        .catch(err => {
+          console.log(err)
+        })
+      }
     }
   }
 </script>

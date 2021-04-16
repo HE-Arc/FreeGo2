@@ -3,7 +3,7 @@ from rest_framework import generics
 from .models import Fridge, Picture, Favorite, Manager, Notification, KmlFile
 from django.contrib.auth.models import User
 from .serializers import FridgeSerializer, PictureSerializer, FavoriteSerializer, ManagerSerializer, CustomTokenObtainPairSerializer, NotificationSerializer, KmlFileSerializer, RegisterSerializer
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
@@ -13,6 +13,7 @@ class FridgeViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Fridge.objects.all()
     serializer_class = FridgeSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def get_queryset(self):
         name = self.request.query_params.get('name')
@@ -24,12 +25,13 @@ class PictureViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Picture.objects.all()
     serializer_class = PictureSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
 class FavoriteViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Favorite.objects.all()
-    permission_classes = (IsAuthenticated, )
     serializer_class = FavoriteSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def get_queryset(self):
         user = self.request.query_params.get('user')
@@ -51,7 +53,7 @@ class ManagerViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Manager.objects.all()
     serializer_class = ManagerSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def get_queryset(self):
         user = self.request.query_params.get('user')
@@ -73,7 +75,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
-    #permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def get_queryset(self):
         user = self.request.query_params.get('user')
@@ -89,6 +91,7 @@ class KmlFileViewSet(viewsets.ModelViewSet):
     queryset = KmlFile.objects.all()
     serializer_class = KmlFileSerializer
     parser_classes = (FileUploadParser,)
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
     def upload(self ,request):
         file_serializer = KmlFileSerializer(data=request.data)

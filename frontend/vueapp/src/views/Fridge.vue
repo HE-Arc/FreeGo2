@@ -2,7 +2,7 @@
   <v-card v-if="fridgeData">
     
     <v-card-title>
-      <v-btn icon @click="favoriteClick">
+      <v-btn icon @click="favoriteClick"  v-if="accessToken!=null">
         <v-icon color="info" large>{{ isFavorite ? 'mdi-star' : 'mdi-star-outline' }}</v-icon>
       </v-btn>
       {{ fridgeData.name }}
@@ -22,6 +22,7 @@
 
 <script>
   import { getAPI } from '../axios-api'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'Fridge',
@@ -36,6 +37,10 @@
       fridgeData: false,
     }),
 
+    computed: {
+      ...mapState(['accessToken']),
+    },
+
     created () {
       // TODO: Perform concurrent requests instead ?
       getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))
@@ -46,9 +51,6 @@
           params: {
             user: this.$store.state.userId,
             fridge: this.fridgeData.id
-          },
-          headers: {
-            'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
           },
         })
         .then(response => {
@@ -86,14 +88,15 @@
         }
         else {
           getAPI.post('/favorite/', {
-            params: {
               user: this.$store.state.userId,
               fridge: this.fridgeData.id
             },
-            headers: {
-              'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
-            },
-          })
+            {
+              headers: {
+                'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+              }
+            }
+          )
           .then(response => {
             this.isFavorite = true
             this.favoriteId = response.data
