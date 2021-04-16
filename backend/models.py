@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
+from django_extensions.db.fields import AutoSlugField
 
 def user_directory_path(instance, filename):
     return 'fridges/{0}'.format(filename)
@@ -24,7 +25,7 @@ class Fridge(models.Model):
 class Picture(models.Model):
     image = models.ImageField(upload_to=user_directory_path)
     created = models.DateTimeField(default=timezone.now)
-    slug = models.SlugField(max_length=250, unique_for_date='created', default='')
+    slug = AutoSlugField(unique=True, populate_from='image')
     fridge = models.ForeignKey(Fridge, on_delete=models.CASCADE, related_name="pictures")
 
 class Favorite(models.Model):

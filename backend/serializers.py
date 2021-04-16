@@ -1,12 +1,15 @@
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Fridge, Picture, Favorite, Manager, Notification, KmlFile
 from django.contrib.auth.models import User
+from django.contrib.auth.password_validation import validate_password
 from django.core.files import File
+from drf_extra_fields.fields import Base64ImageField
 
 class PictureSerializer(serializers.ModelSerializer):
-    fridge = serializers.StringRelatedField()
-    image_url = serializers.SerializerMethodField
+    fridge = serializers.PrimaryKeyRelatedField(queryset=Fridge.objects.all())
+    image = Base64ImageField(max_length=None)
 
     class Meta:
         model = Picture
@@ -22,7 +25,7 @@ class FridgeSerializer(serializers.ModelSerializer):
 
 class FavoriteSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    fridge = serializers.StringRelatedField()
+    fridge = serializers.PrimaryKeyRelatedField(queryset=Fridge.objects.all())
 
     class Meta:
         model = Favorite
@@ -68,3 +71,28 @@ class KmlFileSerializer(serializers.ModelSerializer):
         data = geojson.read()
         f.close()
         return data
+
+class RegisterSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
+    password1 = serializers.CharField(write_only=True, required=True, validators=[validate_password])
+    password2 = serializers.CharField(write_only=True, required=True)
+
+    class Meta:
+        model = User
+        fields = ('username', 'password1', 'password2', 'email')
+
+    def validate(self, attrs):
+        if attrs['password1'] != attrs['password2']:
+            raise serializers.ValidationError({"password1": "Password fields didn't match."})
+
+        return attrs
+
+    def create(self, validated_data):
+        user = User.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email'],
+        )
+        user.set_password(validated_data['password1'])
+        user.save()
+
+        return user

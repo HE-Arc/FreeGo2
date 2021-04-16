@@ -59,12 +59,16 @@ export default new Vuex.Store({
                     password: userCredentials.password
                 })
                 .then(response => {
+                    sessionStorage.setItem('token', JSON.stringify(response.data))
                     context.commit('updateStorage', { access: response.data.access, refresh: response.data.refresh, userId: response.data.userId })
                     resolve()
                     getAPI.get('/notification/', {
                         params: {
                             user: this.state.userId,
-                        }
+                        },
+                        headers: {
+                          'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+                        },
                     })
                     .then(response => {
                         context.commit('updateNotificationsAmount', {notificationsAmount: response.data.length})

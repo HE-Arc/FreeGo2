@@ -12,11 +12,11 @@
 
     <v-carousel>
       <v-carousel-item v-for="picture in fridgeData.pictures" :key=picture.image>
-        <v-img v-bind:src="picture.image" :aspect-ration="3/4"></v-img>
+        <v-img v-bind:src="picture.image" :aspect-ratio="3/4"></v-img>
       </v-carousel-item>
     </v-carousel>
 
-    <v-treeview :items="fridgeData.menu_list.items"></v-treeview>
+    <v-treeview dense :items="fridgeData.menu_list.items"></v-treeview>
   </v-card>
 </template>
 
@@ -46,7 +46,10 @@
           params: {
             user: this.$store.state.userId,
             fridge: this.fridgeData.id
-          }
+          },
+          headers: {
+            'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+          },
         })
         .then(response => {
           if (response.data[0]){
@@ -67,7 +70,11 @@
     methods: {
       favoriteClick() {
         if (this.favoriteId) {
-          getAPI.delete('/favorite/'.concat(this.favoriteId).concat('/'))
+          getAPI.delete('/favorite/'.concat(this.favoriteId).concat('/'), {
+            headers: {
+              'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+            },
+          })
           .then(response => {
             console.log(response)
             this.isFavorite = false
@@ -79,8 +86,13 @@
         }
         else {
           getAPI.post('/favorite/', {
-            user: this.$store.state.userId,
-            fridge: this.fridgeData.id
+            params: {
+              user: this.$store.state.userId,
+              fridge: this.fridgeData.id
+            },
+            headers: {
+              'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+            },
           })
           .then(response => {
             this.isFavorite = true

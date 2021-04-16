@@ -27,7 +27,15 @@
       @click="login"
       color="primary"
     >
-    Se connecter
+      Se connecter
+    </v-btn>
+    <v-btn
+      class="mr-4"
+      :disabled="submitStatus === 'PENDING'"
+      color="secondary"
+      :to="{ name:'signup'}"
+    >
+      Créer un compte
     </v-btn>
     <p v-if="incorrectAuth">Nom d'utilisateur ou mot de passe incorrect - veuillez réessayer</p>
   </form>
@@ -35,7 +43,6 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
   import { required } from 'vuelidate/lib/validators'
 
   export default {
@@ -64,7 +71,6 @@
     },
 
     computed: { 
-      ...mapState(['accessToken']),
       usernameErrors () {
         const errors = []
         if (!this.$v.username.$dirty) return errors
@@ -97,7 +103,7 @@
             console.log(err)
             this.incorrectAuth = true
           })
-          .finally(() =>{
+          .finally(() => {
             this.submitStatus = 'OK'
           })
         }

@@ -34,12 +34,19 @@
     name: 'AddMenu',
 
     data: () => ({
+      menusAmount: null,
     }),
 
     props: {
       menus: Array,
       allergens: Array,
-      menusAmount: Number,
+    },
+    
+    created() {
+      // Dirty trick, should probably use prop.sync instead
+      setTimeout(() => {
+        this.menusAmount = this.menus.length + 1
+      }, 250)
     },
 
     computed: {
@@ -62,6 +69,7 @@
         i -= 1
         // If menu is not an empty string, add it to the menus array. Otherwise, put null instead
         this.menus[i] = (menus ? menus : this.menus[i] = null)
+        this.allergens[i] = ''
         this.checkMenusIntegrity()
       },
       checkMenusIntegrity() {
@@ -69,7 +77,7 @@
         while(this.menus[this.menus.length - 1] == null && this.menus.length > 0){
           this.menus.pop()
         }
-        // Then updates the amount of menu fields to display
+        // Then update the amount of menu fields to display
         this.menusAmount = this.menus.length + 1
       },
       addAllergens(allergens, i) {

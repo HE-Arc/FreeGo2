@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework import routers, permissions
 from backend import views
 from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshView)
-from .views import MyTokenObtainPairView
+from .views import MyTokenObtainPairView, RegisterView
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
@@ -33,4 +33,5 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api-token/', MyTokenObtainPairView.as_view()),
     path('api-token-refresh/', TokenRefreshView.as_view()),
+    path('register/', RegisterView.as_view(), name='register'),
 ]

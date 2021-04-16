@@ -5,23 +5,51 @@
     <v-card-text>
       <form>
 
-        <v-file-input
-          accept="image/png, image/jpeg, image/bmp"
-          placeholder="Photos du Free Go"
-          prepend-icon="mdi-camera"
-          label="Photos"
-          small-chips
-          multiple
-          clearable
-          @change="previewImages"
-        ></v-file-input>
+        <v-row>
+          <v-col cols="12" align="center" justify="space-around">
+            <v-file-input
+              accept="image/png, image/jpeg, image/bmp"
+              prepend-icon='mdi-camera'
+              label="Photos"
+              small-chips
+              multiple
+              clearable
+              @change="previewImages"
+            ></v-file-input>
+          </v-col>
+        </v-row>
+        
+        <v-row>
+          <v-col
+            cols="3"
+            v-for="i in oldImagesAmount"
+            :key="i"
+          >
+            <v-card
+              @click="addToDelete(i-1)"
+            >
+              <v-img
+                :src="oldImages[i-1]"
+                :gradient="oldImagesFlag[i-1] ? '' : 'to top, rgba(0,0,0,.8), rgba(0,0,0,.8)'"
+              />
+            </v-card>
+          </v-col>
 
-        <v-img 
-          v-for="i in imagesAmount"
-          :key="i"
-          :src="imagesUrl[i-1]" 
-          style="border: 1px dashed #ccc; height: 120px; width: 90px;" 
-        />
+          <v-col
+            cols="3"
+            v-for="i in imagesAmount"
+            :key="'o'+i"
+          >
+            <v-card
+              @click="removeFromPost(i-1)"
+            >
+              <v-img
+                :src="images[i-1]" 
+                :gradient="imagesFlag[i-1] ? '' : 'to top, rgba(0,0,0,.8), rgba(0,0,0,.8)'"
+              />
+            </v-card>
+          </v-col>
+        </v-row>
 
         <AddMenu v-if="menus" :menus="menus" :allergens="allergens" :menusAmount="menusAmount"></AddMenu>
           
@@ -54,6 +82,7 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import { getAPI } from '../axios-api'
   import { maxLength } from 'vuelidate/lib/validators'
   import AddMenu from '../components/AddMenu'
@@ -69,8 +98,15 @@
       return {
         fridge: '',
         fridgeId: null,
-        imagesAmount: null,
-        imagesUrl: [],
+        oldImagesAmount: 0,
+        oldImages: [],
+        oldImagesId: [],
+        oldImagesIdToDelete: [],
+        oldImagesFlag: [],
+        imagesAmount: 0,
+        images: [],
+        imagesToPost: [],
+        imagesFlag: [],
         menusJson: null,
         menusAmount: null,
         menus: [],
@@ -97,16 +133,20 @@
         this.menusJson = response.data.menu_list.items
         this.description = response.data.manager_description
         response.data.pictures.forEach(picture => {
-          this.imagesUrl.push(picture.image)
+          this.oldImages.push(picture.image)
+          this.oldImagesId.push(picture.id)
+          this.oldImagesFlag.push(true)
         })
-        this.imagesAmount = this.imagesUrl.length
+        this.oldImagesAmount = this.oldImages.length
 
         this.menusJson.forEach(menu => {
           this.menus.push(menu.name)
           let menuAllergens = []
-          menu.children.forEach(allergen => {
-            menuAllergens.push(allergen.name)
-          })
+          if(menu.children) {
+            menu.children.forEach(allergen => {
+              menuAllergens.push(allergen.name)
+            })
+          }
           this.allergens.push(menuAllergens)
         })
         this.menusAmount = this.menusJson.length + 1
@@ -125,27 +165,32 @@
     methods: {
       createMenusJSON () {
         // Create a json object to use for our menus and allergens
+        this.menusAmount = this.menus.length + 1
         let menusText = '{"items": ['
 
         let i = 0
         this.menus.forEach(menu => {
-          menusText += '{"name": "' + menu + '", "children": ['
-          let allergenIndex = 0
-          this.allergens[i].forEach(allergen => {
-            menusText += '{"name": "' + allergen + '"}'
-            if(allergenIndex < this.allergens[i].length-1){
-              menusText += ','
-            }
-            allergenIndex++
-          })
-          menusText += ']}'
-          if(i < this.menusAmount-2){
+          menusText += '{"name": "' + menu + '"'
+          if(this.allergens[i].toString() !== "") {
+            menusText += ', "children": ['
+            let allergenIndex = 0
+            let allergenList = this.allergens[i].toString().split(",")
+            allergenList.forEach(allergen => {
+              menusText += '{"name": "' + allergen + '"}'
+              if(allergenIndex < allergenList.length-1){
+                menusText += ','
+              }
+              allergenIndex++
+            })
+            menusText += ']'
+          }
+          menusText += '}'
+          if(i < this.menusAmount-2) {
               menusText += ','
             }
           i++
         })
         menusText += ']}'
-
         return JSON.parse(menusText)
       },
 
@@ -155,20 +200,21 @@
           this.submitStatus = 'ERROR'
         } else {
           getAPI.patch('/fridge/'.concat(this.fridgeId).concat('/'), {
-              manager_description: this.description,
-              menu_list: this.createMenusJSON(),
-              /* pictures: {
-                fridge: this.fridgeId,
-                image: this.imagesUrl,
-              } */
+            manager_description: this.description,
+            menu_list: this.createMenusJSON(),
+            headers: {
+              'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+            },
           })
-          .then(response => {
-            console.log(response)
+          .then(() => {
 
             getAPI.get('/favorite/', {
               params:{
                 fridge: this.fridgeId,
-              }
+              },
+              headers: {
+                'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+              },
             })
             .then(response => {
 
@@ -176,6 +222,9 @@
                 getAPI.post('/notification/', {
                   fridge: this.fridgeId,
                   user: response.data[i].user,
+                  headers: {
+                    'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+                  },
                 })
                 .catch(err => {
                   console.log(err)
@@ -192,19 +241,26 @@
             console.log(err)
           })
 
-          // TODO: Submit pictures
-          /* for(let i = 0; i < this.imagesUrl.length; i++){
-            getAPI.post('/media/fridges/', {
-              fridge: this.fridgeId,
-              image: this.imagesUrl[i],
-            })
-            .then(response => {
-              console.log(response)
+          for(let i = 0; i < this.imagesToPost.length; i++){
+            const formData = new FormData()
+            formData.append("image", this.imagesToPost[i])
+            formData.append("fridge", this.fridgeId)
+            getAPI.post('/picture/', formData, {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
             })
             .catch(err => {
               console.log(err)
             })
-          } */
+          }
+
+          for(let i = 0; i < this.oldImagesIdToDelete.length; i++){
+            getAPI.delete('/picture/'.concat(this.oldImagesIdToDelete[i]).concat('/'))
+            .catch(err => {
+              console.log(err)
+            })
+          }
 
           this.submitStatus = 'PENDING'
           setTimeout(() => {
@@ -213,16 +269,49 @@
         }
       },
 
+      addToDelete(index) {
+        if(!this.oldImagesIdToDelete.includes(this.oldImagesId[index])) {
+          this.oldImagesIdToDelete.push(this.oldImagesId[index])
+          Vue.set(this.oldImagesFlag, index, false)
+        }
+        else {
+          for(let i = 0; i < this.oldImagesIdToDelete.length; i++){
+            if (this.oldImagesIdToDelete[i] === this.oldImagesId[index]) {
+              this.oldImagesIdToDelete.splice(i, 1)
+              i--
+            }
+          }
+          Vue.set(this.oldImagesFlag, index, true)
+        }
+      },
+
+      removeFromPost(index) {
+        if(this.imagesToPost.includes(this.images[index])) {
+          for(let i = 0; i < this.imagesToPost.length; i++){
+            if (this.imagesToPost[i] === this.images[index]) {
+              this.imagesToPost.splice(i, 1)
+              i--
+            }
+          }
+          Vue.set(this.imagesFlag, index, false)
+        }
+        else {
+          this.imagesToPost.push(this.images[index])
+          Vue.set(this.imagesFlag, index, true)
+        }
+      },
+
       createImage(files) {
-        const reader = new FileReader();
-        
         files.forEach(file => {
+          const reader = new FileReader()
           reader.onload = (e) => {
-            this.imagesUrl.push(e.target.result)
+            this.images.push(e.target.result)
+            this.imagesToPost.push(e.target.result)
+            this.imagesFlag.push(true)
             this.imagesAmount++
           }
           reader.readAsDataURL(file)
-        });
+        })
       },
       
       previewImages(files) {

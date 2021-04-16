@@ -43,7 +43,10 @@
       getAPI.get('/notification/', {
         params: {
           user: this.$store.state.userId,
-        }
+        },
+        headers: {
+          'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+        },
       })
       .then(response => {
         response.data.forEach(element => {
@@ -67,7 +70,11 @@
 
     methods: {
       deleteNotification(id, notificationId) {
-        getAPI.delete('/notification/'.concat(notificationId).concat('/'))
+        getAPI.delete('/notification/'.concat(notificationId).concat('/'), {
+          headers: {
+            'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+          },
+        })
         .catch(err => {
           console.log(err)
         })

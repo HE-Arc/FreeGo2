@@ -6,6 +6,7 @@ import Fridge from './views/Fridge'
 import Favorites from './views/Favorites'
 import Login from './views/Login'
 import Logout from './views/Logout'
+import Signup from './views/Signup'
 import ContactUs from './views/ContactUs'
 import Donations from './views/Donations'
 import ManageFridge from './views/ManageFridge'
@@ -46,6 +47,11 @@ export default new VueRouter({
             path: '/logout',
             name: 'logout',
             component: Logout,
+        },
+        {
+            path: '/signup',
+            name: 'signup',
+            component: Signup,
         },
         {
             path: '/contact',
