@@ -15,7 +15,6 @@
       </v-list-item>
 
       <v-list-item v-if="select">
-        <!-- TODO: ManageFridge should only be available to Manager role -->
         <v-list-item-content>
           <span>
             <v-select

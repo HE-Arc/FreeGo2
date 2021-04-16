@@ -61,7 +61,6 @@ export default new Vuex.Store({
                 .then(response => {
                     sessionStorage.setItem('token', JSON.stringify(response.data))
                     context.commit('updateStorage', { access: response.data.access, refresh: response.data.refresh, userId: response.data.userId })
-                    resolve()
                     getAPI.get('/notification/', {
                         params: {
                             user: this.state.userId,
@@ -73,12 +72,6 @@ export default new Vuex.Store({
                     .then(response => {
                         context.commit('updateNotificationsAmount', {notificationsAmount: response.data.length})
                         resolve()
-                        setInterval(() => {
-                            context.dispatch('userLoginRefresh')
-                            .catch(err => {
-                                console.log(err)
-                            })
-                        }, 5 * 60 * 1000); // 5 minutes
                     })
                     .catch(err => {
                         reject(err)
@@ -97,6 +90,9 @@ export default new Vuex.Store({
                     refresh: this.state.refreshToken,
                 })
                 .then(response => {
+                    let jsonToken = JSON.parse(sessionStorage.getItem('token'))
+                    jsonToken.access = response.data.access
+                    sessionStorage.setItem('token', JSON.stringify(jsonToken))
                     context.commit('updateAccess', { access: response.data.access })
                     resolve()
                 })
