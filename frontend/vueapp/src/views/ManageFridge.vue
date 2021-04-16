@@ -200,20 +200,19 @@
           this.submitStatus = 'ERROR'
         } else {
           getAPI.patch('/fridge/'.concat(this.fridgeId).concat('/'), {
-            manager_description: this.description,
-            menu_list: this.createMenusJSON(),
-            headers: {
-              'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+              manager_description: this.description,
+              menu_list: this.createMenusJSON()
             },
-          })
+            {
+              headers: {
+                'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+              },
+            }
+          )
           .then(() => {
-
             getAPI.get('/favorite/', {
               params:{
                 fridge: this.fridgeId,
-              },
-              headers: {
-                'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
               },
             })
             .then(response => {
@@ -222,6 +221,8 @@
                 getAPI.post('/notification/', {
                   fridge: this.fridgeId,
                   user: response.data[i].user,
+                },
+                {
                   headers: {
                     'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
                   },
@@ -247,7 +248,8 @@
             formData.append("fridge", this.fridgeId)
             getAPI.post('/picture/', formData, {
               headers: {
-                'Content-Type': 'multipart/form-data'
+                'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`,
+                'Content-Type': 'multipart/form-data',
               }
             })
             .catch(err => {
@@ -256,7 +258,11 @@
           }
 
           for(let i = 0; i < this.oldImagesIdToDelete.length; i++){
-            getAPI.delete('/picture/'.concat(this.oldImagesIdToDelete[i]).concat('/'))
+            getAPI.delete('/picture/'.concat(this.oldImagesIdToDelete[i]).concat('/'), {
+              headers: {
+                'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+              }
+            })
             .catch(err => {
               console.log(err)
             })

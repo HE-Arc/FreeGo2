@@ -44,9 +44,6 @@
         params: {
           user: this.$store.state.userId,
         },
-        headers: {
-          'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
-        },
       })
       .then(response => {
         response.data.forEach(element => {
