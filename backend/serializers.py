@@ -73,13 +73,12 @@ class KmlFileSerializer(serializers.ModelSerializer):
         return data
 
 class RegisterSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
     password1 = serializers.CharField(write_only=True, required=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2', 'email')
+        fields = ('username', 'password1', 'password2')
 
     def validate(self, attrs):
         if attrs['password1'] != attrs['password2']:
@@ -90,7 +89,6 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = User.objects.create(
             username=validated_data['username'],
-            email=validated_data['email'],
         )
         user.set_password(validated_data['password1'])
         user.save()

@@ -107,7 +107,6 @@
         if (this.$v.$invalid) {
           this.submitStatus = 'ERROR'
         } else {
-          // TODO: submit logic here
 
           getAPI.get('/send_email/', {
             params: {
@@ -116,8 +115,7 @@
               message: this.message
             }
           })
-          .then(response => {
-            console.log(response)
+          .then(() => {
           })
           .catch(err => {
             console.log(err)
