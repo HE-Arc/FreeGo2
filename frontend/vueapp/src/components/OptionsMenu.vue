@@ -73,8 +73,10 @@
           },
         })
         .then(response => {
-          response.data.forEach(fridge => this.fridges.push(fridge))
-          this.select = this.fridges[0]
+          this.$nextTick().then(() => {
+            response.data.forEach(fridge => this.fridges.push(fridge))
+            this.select = this.fridges[0]
+          })
         })
         .catch(err => {
           console.log(err)

@@ -128,28 +128,30 @@
     created() {
       getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))
       .then(response => {
-        this.fridge = response.data.name
-        this.fridgeId = response.data.id
-        this.menusJson = response.data.menu_list.items
-        this.description = response.data.manager_description
-        response.data.pictures.forEach(picture => {
-          this.oldImages.push(picture.image)
-          this.oldImagesId.push(picture.id)
-          this.oldImagesFlag.push(true)
-        })
-        this.oldImagesAmount = this.oldImages.length
+        this.$nextTick().then(() => {
+          this.fridge = response.data.name
+          this.fridgeId = response.data.id
+          this.menusJson = response.data.menu_list.items
+          this.description = response.data.manager_description
+          response.data.pictures.forEach(picture => {
+            this.oldImages.push(picture.image)
+            this.oldImagesId.push(picture.id)
+            this.oldImagesFlag.push(true)
+          })
+          this.oldImagesAmount = this.oldImages.length
 
-        this.menusJson.forEach(menu => {
-          this.menus.push(menu.name)
-          let menuAllergens = []
-          if(menu.children) {
-            menu.children.forEach(allergen => {
-              menuAllergens.push(allergen.name)
-            })
-          }
-          this.allergens.push(menuAllergens)
+          this.menusJson.forEach(menu => {
+            this.menus.push(menu.name)
+            let menuAllergens = []
+            if(menu.children) {
+              menu.children.forEach(allergen => {
+                menuAllergens.push(allergen.name)
+              })
+            }
+            this.allergens.push(menuAllergens)
+          })
+          this.menusAmount = this.menusJson.length + 1
         })
-        this.menusAmount = this.menusJson.length + 1
       })
       .catch(err => {
         console.log(err)
