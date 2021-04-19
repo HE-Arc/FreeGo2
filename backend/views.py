@@ -9,6 +9,7 @@ from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 from rest_framework.parsers import FileUploadParser
 from .permissions import IsManagerOf
+from django.core.mail import mail_managers
 
 class FridgeViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
@@ -104,3 +105,11 @@ class KmlFileViewSet(viewsets.ModelViewSet):
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
+
+def send_email_view(request):
+    subject = request.GET['subject']
+    message = 'NE PAS RÉPONDRE À CE MAIL\nSi vous souhaitez contacter la personne ayant envoyé ce message, contactez-la à cette addresse: ' + request.GET['sender_email'] + '\n\n'
+    message += 'Message:\n' + request.GET['message']
+
+    mail_managers(subject, message)
+    return HttpResponse('Email sent')

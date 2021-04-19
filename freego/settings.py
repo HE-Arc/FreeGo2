@@ -140,7 +140,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -184,3 +183,12 @@ REST_FRAMEWORK = {
 
 MEDIA_ROOT = public_root('media')
 MEDIA_URL = env('MEDIA_URL', default='/backend/media/')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'freego.application@gmail.com'
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
+
+MANAGERS = [('Manager', 'example@gmail.com')] # TODO: Add Free Go's mail
