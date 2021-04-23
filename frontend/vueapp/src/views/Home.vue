@@ -54,12 +54,16 @@
     
     data() {
       return {
-        overlay: mapState(['accessToken']),
+        overlay: null,
         distance: 10,
       }
     },
 
     computed: mapState(['accessToken']),
+
+    created() {
+      this.overlay = this.accessToken === null ? true : false
+    },
   }
 </script>
 

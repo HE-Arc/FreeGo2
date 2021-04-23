@@ -29,7 +29,9 @@
         },
       })
       .then(response => {
-        this.APIData = response.data
+        this.$nextTick().then(() => {
+          this.APIData = response.data
+        })
       })
       .catch(err => {
         console.log(err)

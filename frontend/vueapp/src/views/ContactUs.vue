@@ -47,6 +47,7 @@
 
 <script>
   import { required, minLength, email } from 'vuelidate/lib/validators'
+  import { getAPI } from '../axios-api'
 
   export default {
     name: 'ContactUs',
@@ -106,7 +107,20 @@
         if (this.$v.$invalid) {
           this.submitStatus = 'ERROR'
         } else {
-          // TODO: submit logic here
+
+          getAPI.get('/send_email/', {
+            params: {
+              subject: this.subject,
+              sender_email: this.emailAddress,
+              message: this.message
+            }
+          })
+          .then(() => {
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
           this.submitStatus = 'PENDING'
           setTimeout(() => {
             this.submitStatus = 'OK'

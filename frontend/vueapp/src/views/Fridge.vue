@@ -45,66 +45,69 @@
       // TODO: Perform concurrent requests instead ?
       getAPI.get('/fridge/'.concat(this.$route.params.fridgeId).concat('/'))
       .then(response => {
-        this.fridgeData = response.data
+        this.$nextTick().then(() => {
+          this.fridgeData = response.data
 
-        getAPI.get('/favorite/', {
-          params: {
-            user: this.$store.state.userId,
-            fridge: this.fridgeData.id
-          },
-        })
-        .then(response => {
-          if (response.data[0]){
-            this.isFavorite = true
-            this.favoriteId = response.data[0].id
-          }
+          getAPI.get('/favorite/', {
+            params: {
+              user: this.$store.state.userId,
+              fridge: this.fridgeData.id
+            },
+          })
+          .then(response => {
+            if (response.data[0]){
+              this.isFavorite = true
+              this.favoriteId = response.data[0].id
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
         })
         .catch(err => {
           console.log(err)
         })
-
-      })
-      .catch(err => {
-        console.log(err)
       })
     },
 
     methods: {
       favoriteClick() {
-        if (this.favoriteId) {
-          getAPI.delete('/favorite/'.concat(this.favoriteId).concat('/'), {
-            headers: {
-              'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
-            },
-          })
-          .then(response => {
-            console.log(response)
-            this.isFavorite = false
-            this.favoriteId = null
-          })
-          .catch(err => {
-            console.log(err)
-          })
-        }
-        else {
-          getAPI.post('/favorite/', {
-              user: this.$store.state.userId,
-              fridge: this.fridgeData.id
-            },
-            {
+        this.$nextTick().then(() => {
+          if (this.favoriteId) {
+            getAPI.delete('/favorite/'.concat(this.favoriteId).concat('/'), {
               headers: {
                 'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+              },
+            })
+            .then(() => {
+              this.isFavorite = false
+              this.favoriteId = null
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          }
+          else {
+            getAPI.post('/favorite/', {
+                user: this.$store.state.userId,
+                fridge: this.fridgeData.id
+              },
+              {
+                headers: {
+                  'Authorization': `Bearer ${JSON.parse(sessionStorage.getItem('token')).access}`
+                }
               }
-            }
-          )
-          .then(response => {
-            this.isFavorite = true
-            this.favoriteId = response.data
-          })
-          .catch(err => {
-            console.log(err)
-          })
-        }
+            )
+            .then(response => {
+              this.isFavorite = true
+              this.favoriteId = response.data
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          }
+        })
       }
     },
   }

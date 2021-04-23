@@ -33,15 +33,6 @@
       @input="$v.password2.$touch()"
       @blur="$v.password2.$touch()"
     ></v-text-field>
-
-    <v-text-field
-      v-model="email"
-      :error-messages="emailErrors"
-      label="E-mail"
-      required
-      @input="$v.email.$touch()"
-      @blur="$v.email.$touch()"
-    ></v-text-field>
     <v-btn
       class="mr-4"
       :disabled="submitStatus === 'PENDING'"
@@ -56,7 +47,7 @@
 </template>
 
 <script>
-  import { required, email } from 'vuelidate/lib/validators'
+  import { required } from 'vuelidate/lib/validators'
   import { getAPI } from '../axios-api'
 
   export default {
@@ -67,7 +58,6 @@
         username: '',
         password1: '',
         password2: '',
-        email: '',
         submitStatus: null,
         show1: false,
         show2: false,
@@ -83,10 +73,6 @@
       },
       password2: {
         required,
-      },
-      email: {
-        required,
-        email,
       },
     },
 
@@ -105,13 +91,6 @@
         !this.$v.password2.required && errors.push('Veuillez confirmer votre mot de passe')
         return errors
       },
-      emailErrors () {
-        const errors = []
-        if (!this.$v.email.$dirty) return errors
-        !this.$v.email.email && errors.push('Veuillez entrer une adresse e-mail valide')
-        !this.$v.email.required && errors.push('Veuillez entrer votre adresse e-mail')
-        return errors
-      },
     },
 
     methods: {
@@ -121,12 +100,11 @@
           this.submitStatus = 'ERROR'
         } else {
           this.submitStatus = 'PENDING'
-          //Signup logic here
+          
           getAPI.post('/register/', {
             username: this.username,
             password1: this.password1,
             password2: this.password2,
-            email: this.email,
           })
           .then(() => {
             this.$store.dispatch('userLogin', {

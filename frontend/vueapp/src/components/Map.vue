@@ -80,29 +80,31 @@
 
       onEachFeatureFunction() {
         return (feature, marker) => {
+          this.$nextTick().then(() => {
           if (feature.geometry.type == "Point") {
-            marker.bindPopup(
-              () => this.$refs.popup.$el,
-              {
-                maxWidth: "auto",
-              }
-            )
-            marker.on('click', () => {
-              getAPI.get('/fridge/', {
-                params: {
-                  name: feature.properties.name
+              marker.bindPopup(
+                () => this.$refs.popup.$el,
+                {
+                  maxWidth: "auto",
                 }
+              )
+              marker.on('click', () => {
+                getAPI.get('/fridge/', {
+                  params: {
+                    name: feature.properties.name
+                  }
+                })
+                .then(response => {
+                  this.fridge.name = response.data[0].name
+                  this.fridge.id = response.data[0].id
+                })
+                .catch(err => {
+                  console.log(err)
+                })
+                this.showPopup = true
               })
-              .then(response => {
-                this.fridge.name = response.data[0].name
-                this.fridge.id = response.data[0].id
-              })
-              .catch(err => {
-                console.log(err)
-              })
-              this.showPopup = true
-            })
-          }
+            }
+          })
         }
       }
     },
