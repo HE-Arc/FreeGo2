@@ -8,7 +8,7 @@ from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
 from django.http import HttpResponse
 from rest_framework.parsers import FileUploadParser
-from .permissions import IsManagerOf
+from .permissions import IsManagerOf, IsAdminUserOrReadOnly
 from django.core.mail import mail_managers
 
 class FridgeViewSet(viewsets.ModelViewSet):
@@ -55,7 +55,7 @@ class ManagerViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Manager.objects.all()
     serializer_class = ManagerSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAdminUserOrReadOnly, )
 
     def get_queryset(self):
         user = self.request.query_params.get('user')
