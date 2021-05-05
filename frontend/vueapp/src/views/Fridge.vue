@@ -7,8 +7,8 @@
       </v-btn>
       {{ fridgeData.name }}
     </v-card-title>
-    <v-card-text>{{ fridgeData.my_maps_description }}</v-card-text>
-    <v-card-text>{{ fridgeData.manager_description }}</v-card-text>
+    <v-card-text><div v-for="(text, index) in fridgeData.my_maps_description.split('\\n')" :key="index">{{ text }}</div></v-card-text>
+    <v-card-text><div v-for="(text, index) in fridgeData.manager_description.split('\\n')" :key="index">{{ text }}</div></v-card-text>
 
     <v-carousel>
       <v-carousel-item v-for="picture in fridgeData.pictures" :key=picture.image>

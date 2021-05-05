@@ -15,7 +15,7 @@ class FridgeViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Fridge.objects.all()
     serializer_class = FridgeSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, IsManagerOf)
+    permission_classes = (IsAuthenticatedOrReadOnly, IsManagerOf, )
 
     def get_queryset(self):
         name = self.request.query_params.get('name')
