@@ -47,7 +47,6 @@ class Command(BaseCommand):
             for pm in folder.Placemark:
                 coords = str(pm.Point.coordinates).strip("\n").strip().split(",")
                 name = str(pm.name).rstrip("\n")
-                print(str(pm.description).replace("<br>", "\\n"))
 
                 kmlFridges.append({'name': name, 'my_maps_description': str(pm.description).replace("<br>", "\\n"), 'coordinates': Point(float(coords[0]), float(coords[1]))})
 
