@@ -274,9 +274,9 @@
           this.submitStatus = 'PENDING'
           setTimeout(() => {
             this.submitStatus = 'OK'
+            this.$router.push({ path : '/fridge/'.concat(this.fridgeId) });
           }, 500)
 
-          this.$router.push({ path : '/fridge/'.concat(this.fridgeId) });
         }
       },
 
