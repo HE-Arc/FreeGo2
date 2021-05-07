@@ -25,7 +25,17 @@ L’arborescence des fichiers importants pour la compréhension de la structured
 ```
 git clone https://github.com/HE-Arc/FreeGo2.git
 cd FreeGo2
-pipenv path/to/your/python
+pip install pipenv
 pipenv install -r requirements
 ```
 Il faut également installer [GDAL](https://gdal.org/download.html). La version 3.2.2 a été utilisée.
+
+Créer un superuser avec `python manage.py createsuperuser`
+
+Une fois fait, lancer le backend avec `python manage.py runserver` et le frontend avec:
+```
+cd frontend/vueapp
+npm run serve
+```
+
+Ouvrir le navigateur et aller à localhost:8000/admin. Se connecter avec les identifiants du superuser et cliquer sur le bouton d'update/peuplement de la base donnée. Alternativement, le script d'update/peuplement peut être lancé avec `python manage.py updatedb` sans créer de superuser.
