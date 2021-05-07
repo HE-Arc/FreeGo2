@@ -1,0 +1,39 @@
+{% extends "admin/index.html" %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('NEW TITLE') }}{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('NEW TITLE') }}</a></h1>
+{% endblock %}
+
+{% block nav-global %}
+    {{ block.super }}
+    <a href="{% url 'update_db' %}" style="color: gold;">Update database with Google My Maps</a>
+{% endblock %}
+
+{% block content %}
+<div>
+    <h2>Guide de l'administrateur</h2>
+    <h3><a onclick="document.getElementById('div1').style.display === 'none' ? document.getElementById('div1').style.display = 'block' : document.getElementById('div1').style.display = 'none' ">Synchronisation avec la carte Google My Maps</a></h3>
+    <div id="div1" style="display: none;">
+        <p>Pour mettre à jour les données de la base de données avec les nouveaux réfrigérateurs entrés dans la carte My Maps, cliquez sur le lien "Update database with Google My Maps" dans la bannière en haut de cette page.</p>
+    </div>
+    <h3><a onclick="document.getElementById('div2').style.display === 'none' ? document.getElementById('div2').style.display = 'block' : document.getElementById('div2').style.display = 'none' ">Ajout d'un nouveau gestionnaire</a></h3>
+    <div id="div2" style="display: none;">
+        <p>Pour ajouter un gestionnaire, cliquez sur "Add" dans la ligne des <strong>Managers</strong> ci-dessous. Sélectionnez l'utilisateur devant devenir un gestionnaire (la personne doit donc avoir créé un compte au préalable) ainsi que le réfrigérateur à gérer. Pour finir, cliquez sur le bouton "Save" pour enregistrer.</p>
+        <p>Si vous souhaitez donner les droits pour plusieurs réfrigérateurs, la démarche doit être faite pour chaque réfrigérateur. Le bouton "Save and add another" peut être utilisé à la place de "Save" pour gagner du temps.</p>
+    </div>
+    <h3><a onclick="document.getElementById('div3').style.display === 'none' ? document.getElementById('div3').style.display = 'block' : document.getElementById('div3').style.display = 'none' ">Suppression d'un gestionnaire</a></h3>
+    <div id="div3" style="display: none;">
+        <p>Pour retirer les droits de gestionnaire à un utilisateur, cliquez sur "Change" dans la ligne des <strong>Managers</strong> ci-dessous. Un tableau représentant tous les gestionnaires s'affiche avec les couples utilisateur/réfrigérateur. Cherchez le couple que vous souhaitez supprimer et cliquez sur la case à cocher à gauche de la ligne. Plusieurs couples peuvent être sélectionnés en cochant plusieures cases.</p>
+        <p>Une fois le(s) couples sélectionnés, cliquez sur le menu déroulant "Action:" en haut du tableau et sélectionnez "Delete selected managers" puis cliquez sur "Go". Une page de résumé des actions s'affiche, cliquez sur le bouton "Yes, I'm sure" pour confirmer la suppression des droits de gestionnaire précédemment sélectionnés.</p>
+    </div>
+</div>
+<div id="content-main">
+  {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+</div>
+{% endblock %}
+
+{% block sidebar %}
+{{ block.super }}
+{% endblock %}

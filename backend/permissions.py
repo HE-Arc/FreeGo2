@@ -17,3 +17,9 @@ class IsManagerOf(permissions.BasePermission):
             fridgeId = Fridge.objects.filter(name=obj)[0].id
             p = Manager.objects.filter(user__id=userId).filter(fridge__id=fridgeId)
             return bool(p)
+
+class IsAdminUserOrReadOnly(permissions.IsAdminUser):
+
+    def has_permission(self, request, view):
+        is_admin = super().has_permission(request, view)
+        return request.method in permissions.SAFE_METHODS or is_admin

@@ -48,7 +48,7 @@ class Command(BaseCommand):
                 coords = str(pm.Point.coordinates).strip("\n").strip().split(",")
                 name = str(pm.name).rstrip("\n")
 
-                kmlFridges.append({'name': name, 'my_maps_description': pm.description, 'coordinates': Point(float(coords[0]), float(coords[1]))})
+                kmlFridges.append({'name': name, 'my_maps_description': str(pm.description).replace("<br>", "\\n"), 'coordinates': Point(float(coords[0]), float(coords[1]))})
 
         for kmlFridge in kmlFridges:
             qs_closest_fridges = Fridge.objects.filter(coordinates__distance_lte=(kmlFridge['coordinates'], 10)) # Get DB fridges that are less than 10 meters away from kml fridge

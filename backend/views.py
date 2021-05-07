@@ -6,16 +6,18 @@ from .serializers import FridgeSerializer, PictureSerializer, FavoriteSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework import viewsets
 from rest_framework.renderers import JSONRenderer
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from rest_framework.parsers import FileUploadParser
-from .permissions import IsManagerOf
+from .permissions import IsManagerOf, IsAdminUserOrReadOnly
 from django.core.mail import mail_managers
+from django.core.management import call_command
+from django.urls import reverse
 
 class FridgeViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Fridge.objects.all()
     serializer_class = FridgeSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, IsManagerOf)
+    permission_classes = (IsAuthenticatedOrReadOnly, IsManagerOf, )
 
     def get_queryset(self):
         name = self.request.query_params.get('name')
@@ -55,7 +57,7 @@ class ManagerViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer,]
     queryset = Manager.objects.all()
     serializer_class = ManagerSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAdminUserOrReadOnly, )
 
     def get_queryset(self):
         user = self.request.query_params.get('user')
@@ -113,3 +115,7 @@ def send_email_view(request):
 
     mail_managers(subject, message)
     return HttpResponse('Email sent')
+
+def update_db_view(request):
+    call_command('updatedb')
+    return HttpResponseRedirect(reverse('admin:index'))

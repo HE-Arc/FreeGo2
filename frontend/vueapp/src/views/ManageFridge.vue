@@ -60,6 +60,7 @@
           :counter="300"
           hint="Informez les utilisateurs des horaires spéciaux !"
           clearable
+          multi-line
           @input="$v.description.$touch()"
           @blur="$v.description.$touch()"
         ></v-textarea>
@@ -273,7 +274,9 @@
           this.submitStatus = 'PENDING'
           setTimeout(() => {
             this.submitStatus = 'OK'
+            this.$router.push({ path : '/fridge/'.concat(this.fridgeId) });
           }, 500)
+
         }
       },
 
