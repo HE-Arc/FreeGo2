@@ -30,6 +30,8 @@ pipenv install -r requirements
 ```
 Il faut également installer [GDAL](https://gdal.org/download.html). La version 3.2.2 a été utilisée.
 
+Créer un .env dans /freego/.env. (un modèle est diponible .env.example).
+
 Je conseille de toujours travailler dans l'environnement virtuel python de pipenv avec `pipenv shell`.
 
 Créer un superuser avec `python manage.py createsuperuser`
