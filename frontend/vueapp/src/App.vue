@@ -30,6 +30,15 @@
       Head,
     },
 
+    watch: {
+      title: {
+        immediate: true,
+        handler() {
+          document.title = "Free Go";
+        }
+      }
+    },
+
     data: () => ({
       //
     }),
