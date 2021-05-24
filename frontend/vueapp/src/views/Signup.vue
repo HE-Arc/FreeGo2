@@ -35,7 +35,7 @@
     ></v-text-field>
     <v-btn
       class="mr-4"
-      :disabled="submitStatus === 'PENDING'"
+      :disabled="submitStatus === 'PENDING' || $v.$invalid"
       color="Primary"
       @click="signup"
       :to="{ name:'signup'}"
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-  import { required } from 'vuelidate/lib/validators'
+  import { required, minLength } from 'vuelidate/lib/validators'
   import { getAPI } from '../axios-api'
 
   export default {
@@ -70,9 +70,25 @@
       },
       password1: {
         required,
+        minLength: minLength(8),
+        containsUppercase: function(value) {
+          return /[A-Z]/.test(value)
+        },
+        containsLowercase: function(value) {
+          return /[a-z]/.test(value)
+        },
+        containsNumber: function(value) {
+          return /[0-9]/.test(value)
+        },
+        containsSpecial: function(value) {
+          return /[#?!@$%^&*-]/.test(value)
+        }
       },
       password2: {
         required,
+        matchPassword1: function(value) {
+          return this.password1 == value
+        }
       },
     },
 
@@ -87,8 +103,14 @@
         const errors = []
         if (!this.$v.password1.$dirty) return errors
         !this.$v.password1.required && errors.push('Veuillez entrer votre mot de passe')
+        !this.$v.password1.minLength && errors.push('Le mot de passe doit faire au minimum 8 caractères')
+        !this.$v.password1.containsUppercase && errors.push('Le mot de passe doit comprendre au moins une majuscule')
+        !this.$v.password1.containsLowercase && errors.push('Le mot de passe doit comprendre au moins une minuscule')
+        !this.$v.password1.containsNumber && errors.push('Le mot de passe doit comprendre au moins un chiffre')
+        !this.$v.password1.containsSpecial && errors.push('Le mot de passe doit comprendre au moins un caractère spécial (#?!@$%^&*-)')
         if (!this.$v.password2.$dirty) return errors
         !this.$v.password2.required && errors.push('Veuillez confirmer votre mot de passe')
+        !this.$v.password2.matchPassword1 && errors.push('Le mot de passe ne correspond pas au premier')
         return errors
       },
     },
